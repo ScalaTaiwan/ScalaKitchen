@@ -13,3 +13,9 @@ Scala 料理教室希望藉由簡單的程式範例，讓大家快速上手 Scal
 <div style="text-align: center"><img src="val.svg" height="130px"/></div>
 
 Scala 中的所有變數都是有固定型態的，我可以宣告一個整數(Int) `val a: Int = 10`；宣告一個字串(String) `val b: String = "abc"`，但我不能寫 `val c: Int = "abc"`
+
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=PylqMcb/0"></iframe>
+
+當 Scala compiler 看到你寫 `val a: Int = 10` 的時候，因為等號右邊是 `10`，他就知道 `a` 一定是 `Int`。所以 `: Int` 的部份其實可以省略不寫:
+
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=Ua6OWKm/2"></iframe>
