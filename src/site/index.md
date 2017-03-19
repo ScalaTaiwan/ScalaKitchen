@@ -21,11 +21,11 @@ Scala 料理教室希望藉由簡單的程式範例，讓大家快速上手 Scal
 本教室由 ScalaTaiwan 社群維護，如在學習上發現任何問題或建議，都歡迎到我們的 [Gitter聊天室](https://gitter.im/ScalaTaiwan/ScalaTaiwan) 聊聊。
 在教室中常常會看到像上面的 ScalaFiddle 料理台，請盡情地亂改 code，跑跑看，有任何好奇的東西就用 `println()` 把它印出來瞧瞧吧。
 
-# Dish 1: Variables
+## Dish 1: Variables
 
 在 Scala 裡要宣告一個變數的寫法是:
 
-<div style="text-align: center"><img src="val.svg" height="130px"/></div>
+<img class="float-center" src="val.svg" style="height:130px"/>
 
 Scala 中的所有變數都是有固定型態的，我可以宣告一個整數(Int) `val a: Int = 10`；宣告一個字串(String) `val b: String = "abc"`，但我不能寫 `val c: Int = "abc"`
 
@@ -51,9 +51,9 @@ val c = "The value of b is " + b
 println(c)
 ```
 
-# Dish 2: If Expression
+## Dish 2: If Expression
 
-<div style="text-align: center"><img src="if.svg" height="100px"/></div>
+<img class="float-center" src="if.svg" style="height:100px"/>
 
 Scala 的 if expression 由上面三個區塊構成，▢ 的部份需要是一個 `Boolean`，例如 `true`, `false`, `2 > 1`, `a == b`, `3 <= 4 && "a" != "b"`。
 
