@@ -151,3 +151,26 @@ println("b2 = " + b2)
 
 ## Blocks
 
+<img class="float-center" src="block.svg" style="height:100px"/>
+
+Block 是由一對大括號包起來的區域，在 block 外面可以寫的東西，在 block 裡面也能寫，例如 variables、if expressions、functions、或是另外一層的 block:
+
+```scalaFiddle
+val a = 10
+def b() = a + 1
+
+{
+  val a = 11
+  def c() = a + 1
+  
+  {
+    val a = 12
+    def c() = a + 1
+    
+    println("b() = " + b())
+    println("c() = " + c())
+  }
+  
+  println("c() = " + c())
+}
+```
