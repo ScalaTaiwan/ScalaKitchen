@@ -1,3 +1,10 @@
+<script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'ScalaTaiwan/ScalaTaiwan'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+
 # Welcome to ScalaKitchen!
 
 ```scalaFiddle libraries="Java8 Time-0.1.0"
@@ -51,7 +58,7 @@ val c = "The value of b is " + b
 println(c)
 ```
 
-## If expression
+## If Expression
 
 <img class="float-center" src="if.svg" style="height:100px"/>
 
@@ -141,3 +148,6 @@ println("b1() = " + b1())
 println("b1 = " + b1)
 println("b2 = " + b2)
 ```
+
+## Blocks
+
