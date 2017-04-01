@@ -174,3 +174,43 @@ def b() = a + 1
   println("c() = " + c())
 }
 ```
+
+從上面的例子可以發現，block 能夠存取或遮蔽 block 外面的 variable 或 function，只要取了一樣的名字，就會產生遮蔽的效果，以最接近的那個宣告為準。
+
+接下來，由於 block 本身也是一個 expression (跟 if 一樣)，整個 block 最後會帶著一個值，這個值由 block 中最後一行(或可以說最後一個動作，畢竟 Scala 可以亂換行)的運算結果來決定。我們一樣可以用一個 val 去把這個值接住:
+
+```scalaFiddle
+val res = {
+  def ulu(str: String) = {
+    str.toUpperCase + str.toLowerCase + str.toUpperCase
+  }
+  
+  ulu("Scala") + " " + ulu("Taiwan")
+}
+
+println(res)
+```
+
+當整個 block 做完運算，取得最後帶的值之後，block 中所有的 variable 跟 function 都會被消滅。也就是說，如果你為了算出某個值，需要建立一些暫時的變數的話，可以把他們包在 block 裡面，避免他們持續佔用記憶體空間。
+
+最後，我們可以直接把一個 block 塞在 if expression 裡面，或是 def 的後面:
+
+```scalaFiddle
+val a = if (1 > 2) {
+  val b = 10
+  b + 1
+} else {
+  val b = 11
+  b + 1
+}
+
+def b(c: Int) = {
+  val d = 20
+  d + c
+}
+
+println("a = " + a)
+println("b(3) = " + b(3))
+```
+
+要注意的是，這些大括號並不是 if else 或 def 的一部分，他就只是一個單純的 block，剛好被放在那個位置而已。
