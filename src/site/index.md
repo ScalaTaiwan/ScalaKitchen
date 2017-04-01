@@ -181,9 +181,8 @@ def b() = a + 1
 
 ```scalaFiddle
 val res = {
-  def ulu(str: String) = {
+  def ulu(str: String) =
     str.toUpperCase + str.toLowerCase + str.toUpperCase
-  }
   
   ulu("Scala") + " " + ulu("Taiwan")
 }
