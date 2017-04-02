@@ -93,11 +93,11 @@ println("a = " + a + ", b = " + b + ", c = " + c + ", d = " + d)
 △ 的部份可以填入一個單純的值、一個 block `{...}`、或是一個 if expression:
 
 ```scalaFiddle
-def repeat(w: String, count: Int): String = if (count % 2 == 0) {
-  w * count
-} else {
-  w.toLowerCase() * count
-}
+def repeat(w: String, count: Int): String =
+  if (count % 2 == 0)
+    w * count
+  else
+    w.toLowerCase() * count
 
 val res = repeat(repeat("A", 4) + repeat("B", 3), 2)
 
@@ -108,14 +108,13 @@ println(res)
 
 ```scalaFiddle
 def repeat(w: String,
-  count: Int): String = 
+  count: Int): String =
    if (count %
-  2 == 0) {
+  2 == 0)
   w * count
-} else {
+   else
   w.toLowerCase() * 
     count
-}
 
 val res = repeat(repeat("A", 4) +
   repeat("B", 3),
@@ -213,3 +212,40 @@ println("b(3) = " + b(3))
 ```
 
 要注意的是，這些大括號並不是 if else 或 def 的一部分，他就只是一個單純的 block，剛好被放在那個位置而已。
+
+## def vs val
+
+在這裡我們先暫停來釐清一下 `def` 跟 `val` 的差異，由於這兩個 keyword 可以寫出幾乎一模一樣的東西:
+
+```scalaFiddle
+val a1 = 10
+
+def a2 = 10
+
+println("a1 = " + a1)
+println("a2 = " + a2)
+```
+
+可能有人會疑惑 `val a1` 跟 `def a2` 到底差在哪。簡單地說，寫在 def 後面的東西可能會跑很多次，但 val 後面的東西只會跑一次。這邊因為都是 `= 10` 可能比較不清楚，但如果其中有包含一些動作的話，就可以看出差異:
+
+```scalaFiddle
+val a1 = {
+  println("computing a1")
+  10
+}
+
+def a2 = {
+  println("computing a2")
+  10
+}
+
+println("=====")
+
+println("a1 = " + a1)
+println("a1 = " + a1)
+
+println("a2 = " + a2)
+println("a2 = " + a2)
+```
+
+可以看到我們在 `println()` 裡面各別取用了 `a1` 跟 `a2` 兩次，但 `"computing a1"` 從頭到尾只出現一次，而且是在 `println("=====")` 執行之前就先執行了。
