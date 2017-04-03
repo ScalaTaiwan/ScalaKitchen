@@ -249,3 +249,50 @@ println("a2 = " + a2)
 ```
 
 可以看到我們在 `println()` 裡面各別取用了 `a1` 跟 `a2` 兩次，但 `"computing a1"` 從頭到尾只出現一次，而且是在 `println("=====")` 執行之前就先執行了。
+
+## Sequences
+
+<img class="float-center" src="Seq.svg" style="height:130px"/>
+
+我們現在知道 `val` 可以拿來放一個 `Int` 或一個 `String` 這類的東西，但如果我們想一口氣擺很多個 `Int` 呢？這時候就可以讓 Scala 的 Collections 家族出場了。
+
+`Seq` (全名 Sequence)應該可以說是 Scala Collections 中，甚至是 Scala 程式中最常見的成員，他可以幫你儲存一整排同樣型態的資料(例如一排的 `Int`、一排的 `String`，甚至是一排的 `Seq`)。利用如上的方式創造一個 `Seq` 之後，我們可以把他指給一個 `val`，接著我們就可以對這個 `Seq` 做些操作，例如查看 `Seq` 中第 3 個位置的值，或是取得 `Seq` 的前三個元素，藉此創造一個新的 `Seq` 等等:
+
+```scalaFiddle
+val s: Seq[Seq[Int]] = Seq(
+  Seq(1,2),
+  Seq(3,4,5),
+  Seq(6,7,8,9)
+)
+
+//取得第 3 個元素(編號從 0 開始，所以這裡要給 2)
+val third: Seq[Int] = s.apply(2)
+
+//取得前 3 個元素
+val three: Seq[Int] = third.take(3)
+
+println("three = " + three)
+println("third = " + third)
+println("s = " + s)
+```
+
+從上面的例子我們可以發現 Sequence 實際的 type 其實是 `Seq[◯]` 而不是單純的 `Seq`，◯ 代表的是這個 `Seq` 中所儲存的元素型態。我們的第一個變數 `s` 的型態是 `Seq[Seq[Int]]`，代表他是一個內部裝著 `Seq` 的 `Seq`，並且內部的每個 `Seq` 又裝著 `Int`。一樣，`: Seq[Seq[Int]]` 的部份我們也可以省略不寫，交給 compiler 自動判斷。
+
+一路看下來，我們遇到過幾種不同的資料型態，例如 `Int`、`Double`、`String`、或現在的 `Seq`。在 Scala 中，這些全部都是某一種 "class"，`Int`、`Double`、`String`、`Seq` 分別是四種不同的 class。一個 class 除了會帶著他當下的值(例如一個 `Int` 可能帶著 `10`，一個 `Seq` 可能帶著四個 `String` `"a","b","c","d"`)之外，也會帶著一些可以讓你呼叫的 functions。這些 functions 一樣是由 `def` 定義出來的，並且可以存取 class 身上帶的值，進行一些運算之後，回傳你想要的結果，例如之前看過的 `.toString`、`.toUpperCase`，或是這邊看到的 `.apply()`、`.take()`。當我們在一個變數或值的後面加上 "." 時，就可以啟動藏在 class 裡面的 functions。通常這些 functions 並不會修改 class 身上帶的值，因此我們可以發現，就算我們對 `s` 呼叫了 `.apply()`，或是對 `third` 呼叫了 `.take()`，`s` 跟 `third` 印出來的值依然跟一開始創建時一樣沒有改變。
+
+附帶一提，你可能有注意到，用 `println()` 把 `Seq` 印出來之後，看到的卻是 `List(...)`，這是 class 的繼承關係造成的結果，可以先把 `List` 當成一種 `Seq` 來看待就好了。關於更多 class 的架構說明，就留待之後揭曉，我們先來看看 `Seq` 還有哪些方便的 functions 可以使用:
+
+```scalaFiddle
+val s = Seq(1,2,3,4,5)
+
+println("head = " + s.head)
+println("tail = " + s.tail)
+println("init = " + s.init)
+println("last = " + s.last)
+println("drop(3) = " + s.drop(3))
+println("takeRight(3) = " + s.takeRight(3))
+println("dropRight(3) = " + s.dropRight(3))
+println("s :+ 6 = " + (s :+ 6))
+println("0 +: s = " + (0 +: s))
+println("s ++ Seq(1,2) = " + (s ++ Seq(1,2)))
+```
