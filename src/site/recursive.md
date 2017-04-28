@@ -24,12 +24,15 @@ for(i <- List(1, 2, 3, 4, 5)){
   if(i > max)
     max = i
 }
+
+println(max)
 ```
 
 透過遞迴方式我們會怎麼解決呢？
 
 ```scalaFiddle
-findMax(List(1, 2, 3, 4, 5))
+val max = findMax(List(1, 2, 3, 4, 5))
+
 def findMax(list: List[Int]): Int = {
    list match{
      // 假如是空的串列，我們回傳0
@@ -41,6 +44,8 @@ def findMax(list: List[Int]): Int = {
      case h :: t => Math.max(h, findMax(t))
    }
 }
+
+println(max)
 ```
 * 在迴圈版本中，逐一每個元素跟某一個mutable變數比大小。
 * 在遞迴版本中，第一個元素跟去除第一個元素的串列的最大值比大小。
@@ -52,7 +57,7 @@ def findMax(list: List[Int]): Int = {
 做法跟找出最大值類似，第一個元素跟去除第一個元素的串列的最小值比大小。
 
 ```scalaFiddle
-findMin(List(1, 2, 3, 4, 5))
+val min = findMin(List(1, 2, 3, 4, 5))
 
 def findMin(list: List[Int]): Int = {
    list match{
@@ -65,6 +70,8 @@ def findMin(list: List[Int]): Int = {
      case h :: t => Math.min(h, findMin(t))
    }
 }
+
+println(min)
 ```
 
 
@@ -72,7 +79,7 @@ def findMin(list: List[Int]): Int = {
 檢查第一個元素是否等於目標值或是去除第一個元素的串列有目標值
 
 ```scalaFiddle
-find(List(1, 2, 3, 4, 5), 5)
+val target = find(List(1, 2, 3, 4, 5), 5)
 
 def find(list: List[Int], target: Int): Boolean = {
    list match{
@@ -85,13 +92,15 @@ def find(list: List[Int], target: Int): Boolean = {
      case h :: t => (h == target) || find(t, target)
    }
 }
+
+println(target)
 ```
 
 ## 反轉一個字串
 先反轉去除第一個字元的串列，之後再將第一字元放在最後面
 
 ```scalaFiddle
-reverse("I should learn scala seriously!".toList)
+val result = reverse("I should learn scala seriously!".toList)
 
 def reverse(list: List[Char]): String = {
   list match {
@@ -104,6 +113,8 @@ def reverse(list: List[Char]): String = {
     case h :: t => reverse(t) + h
   }
 }
+
+println(result)
 ```
 
 ## 判斷一個字串是否為另外一個字串的子字串
@@ -129,8 +140,8 @@ def reverse(list: List[Char]): String = {
 因為第一個字母不一樣，則"bcdefghi"和"defgh"繼續比
 
 ```scalaFiddle
-isSubString("I should learn scala seriously!".toList, "scala".toList)
-isSubString("I should learn scala seriously!".toList, "XXOO".toList)
+println(isSubString("I should learn scala seriously!".toList, "scala".toList))
+println(isSubString("I should learn scala seriously!".toList, "XXOO".toList))
 
 def isSubString(original: List[Char], target: List[Char]): Boolean = {
   (original, target) match {
@@ -153,7 +164,8 @@ def isSubString(original: List[Char], target: List[Char]): Boolean = {
 
 ```scalaFiddle
 
-quicksort(List(4, 3, 2, 9, 10))
+val sortResult = quicksort(List(4, 3, 2, 9, 10))
+
 def quicksort(list: List[Int]): List[Int] = {
   list match {
     case Nil => Nil
@@ -161,6 +173,8 @@ def quicksort(list: List[Int]): List[Int] = {
     case h :: t => quicksort(t.filter(_ <= h)) ::: h :: t.filter(_ > h)
   }
 }
+
+println(sortResult)
 ```
 
 
@@ -169,7 +183,7 @@ def quicksort(list: List[Int]): List[Int] = {
 何謂費氏數列：[費氏數列](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97)
 
 ```scalaFiddle
-fib(6)
+val result = fib(6)
 
 def fib(n: Int): Int = {
   n match {
@@ -178,6 +192,8 @@ def fib(n: Int): Int = {
     case _ => fib(n - 1) + fib(n - 2)
   }
 }
+
+println(result)
 ```
 
 經過幾次的練習，我們應該大概可以慢慢掌握到怎麼運用遞迴來達到迴圈目的。
@@ -234,7 +250,7 @@ def async(n : Int): Future[Int] = {
 ```scalaFiddle
 import scala.annotation.tailrec
 
-fib(0, 1, 5)
+val result = fib(0, 1, 5)
 
 @tailrec
 def fib(previous: Int, current: Int, n: Int): Int = {
@@ -244,4 +260,6 @@ def fib(previous: Int, current: Int, n: Int): Int = {
     case _ => fib(current, previous + current, n - 1)
   }
 }
+
+println(result)
 ``` 
