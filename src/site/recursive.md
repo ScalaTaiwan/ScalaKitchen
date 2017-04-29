@@ -125,6 +125,7 @@ println(result)
 * "" 為 "XXXYYYabc"的子字串
 * "ABC" 不為 "XXXYYYabc"的子字串
 * "QQWW" 不為 "XXXYYYabc"的子字串
+* "XXXaYYY" 不為 "XXXYYYabc"的子字串
 
 先比較主要字串和子字串的第一個字母是否一樣，
 * 若一樣則這兩個字串去除第一個字母繼續比
@@ -133,15 +134,17 @@ println(result)
 例如：
 主要字串："abcdefghi"
 子字串: "abc"
-因為第一個字母一樣，則"bcdefghi"和"bc"繼續比
+檢查主要字串前三個字母（abc）是否和子字串（abc）一樣，若一樣就回傳`true`
 
 主要字串："abcdefghi"
 子字串: "defgh"
-因為第一個字母不一樣，則"bcdefghi"和"defgh"繼續比
+檢查主要字串前五個字母（abcde）是否和子字串（defgh）一樣，若不一樣，
+則 "bcdefghi" 和 "defgh" 繼續比
 
 ```scalaFiddle
 println(isSubString("I should learn scala seriously!".toList, "scala".toList))
 println(isSubString("I should learn scala seriously!".toList, "XXOO".toList))
+println(isSubString("I should learn scala seriously!".toList, "scaxxyyla".toList))
 
 def isSubString(original: List[Char], target: List[Char]): Boolean = {
   (original, target) match {
@@ -149,8 +152,8 @@ def isSubString(original: List[Char], target: List[Char]): Boolean = {
     case (_, Nil) => true
     case (o :: Nil, t :: Nil) if (o == t) => true
     case (o :: Nil, t :: Nil) if (o != t) => false
-    case (oh :: ot, th :: tt) if (oh == th) => isSubString(ot, tt)
-    case (oh :: ot, th :: tt) if (oh != th) => isSubString(ot, target)
+    case (o, t) if (o.take(t.length) == t) => true
+    case (oh :: ot, t) => isSubString(ot, t)
   }
 }
 ```
@@ -170,14 +173,12 @@ def quicksort(list: List[Int]): List[Int] = {
   list match {
     case Nil => Nil
     case h :: Nil => List(h)
-    case h :: t => quicksort(t.filter(_ <= h)) ::: h :: t.filter(_ > h)
+    case h :: t => quicksort(t.filter(_ <= h)) ::: h :: quicksort(t.filter(_ > h))
   }
 }
 
 println(sortResult)
 ```
-
-
 
 ## 寫出費氏數列
 何謂費氏數列：[費氏數列](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97)
@@ -212,26 +213,37 @@ println(result)
 假如：
 1. 去嘗試走所有可能的路徑不多，但是每一個步計算很花時間，遞迴容易轉換成非同步程式。
 
-假如有一個遞迴程式如下：
+以排序為例，一個串列數量小於一千，我們可以使用[Insertion Sort](https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F)；大於一千改使用Quicksort：
+
 ```scala
-def sync(n : Int): Int = {
-  n match{
+def sort(list: List[Int]): List[Int] = {
+  if(n < 1000){
     // 需要大量時間計算才可以得出結果
-    case 0 => 9999 
-    
-    case _ => sync(n - 10)
+    insertionSort(list)
+  }
+  else{
+    list match {
+      case Nil => Nil
+      case h :: Nil => List(h)
+      case h :: t => sort(t.filter(_ <= h)) ::: h :: sort(t.filter(_ > h))
+    }
   }
 }
 ```
 
 我們可以輕易將它轉換成非同步程式。
 ```scala
-def async(n : Int): Future[Int] = {
-  n match{
-    // 需要大量時間計算才可以得出結果
-    case 0 => Future(9999) 
-    
-    case _ => async(n - 1)
+def sort(list: List[Int]): Future[List[Int]] = {
+  if(n < 1000){
+    // 需要大量時間計算才可以得出結果 
+    Future(insertionSort(list))
+  }
+  else{
+    list match {
+      case Nil => Future(Nil)
+      case h :: Nil => Future(List(h))
+      case h :: t => Future(sort(t.filter(_ <= h)) ::: h :: t.filter(_ > h))
+    }
   }
 }
 ```
