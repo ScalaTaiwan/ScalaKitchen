@@ -242,7 +242,7 @@ def sort(list: List[Int]): Future[List[Int]] = {
     list match {
       case Nil => Future(Nil)
       case h :: Nil => Future(List(h))
-      case h :: t => Future(sort(t.filter(_ <= h)) ::: h :: t.filter(_ > h))
+      case h :: t => Future(sort(t.filter(_ <= h)) ::: h :: sort(t.filter(_ > h)))
     }
   }
 }
