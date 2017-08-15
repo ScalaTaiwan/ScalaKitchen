@@ -108,7 +108,7 @@ class ScalaFiddleExtension(configuredObject: ConfiguredObject) extends Extension
         ("description" -> description) ~
         ("sourceCode" -> c) ~
         ("libraries" -> libraries.map(getLibrary(_))) ~
-        ("forced" -> List[String]()) ~
+        ("scalaVersion" -> "2.11") ~
         ("available" -> List[String]()) ~
         ("author" -> List[String]()))
     Try {
