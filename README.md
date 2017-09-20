@@ -11,4 +11,7 @@ A Scala tutorial with embedded ScalaFiddle examples.
     * [Blocks](https://scalataiwan.github.io/ScalaKitchen/#blocks)
     * [def vs val](https://scalataiwan.github.io/ScalaKitchen/#def-vs-val)
     * [Sequences](https://scalataiwan.github.io/ScalaKitchen/#sequences)
+    * [infix operator](https://scalataiwan.github.io/ScalaKitchen/#infix-operator)
+    * [String](https://scalataiwan.github.io/ScalaKitchen/#string)
+    * [=>](https://scalataiwan.github.io/ScalaKitchen/#section)
 * [Recursive](https://scalataiwan.github.io/ScalaKitchen/recursive.html)
