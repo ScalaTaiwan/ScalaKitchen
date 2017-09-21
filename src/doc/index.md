@@ -296,3 +296,202 @@ println("s :+ 6 = " + (s :+ 6))
 println("0 +: s = " + (0 +: s))
 println("s ++ Seq(1,2) = " + (s ++ Seq(1,2)))
 ```
+
+## infix operator
+
+Infix operator就是放在兩個值中間的運算子。例如 `a + b`的`+`。
+在Scala裡面operator就是一般的method。例如一般常見的數字加法`val a = 1 + 1`其實就是`val a = 1.+(1)`。
+
+Scala有基本的規則讓我們可以使用空格代替`.`和`()`。
+
+```
+a b c d e == a.b(c).d(e)
+```
+
+這提供了我們在設計API上的便利性，也可以讓看起來很不順的程式變的比較容易閱讀。
+
+```scalaFiddle
+
+case class Complex(real: Int, imaginary: Int) {
+
+  def add(a: Complex): Complex = Complex(real + a.real, imaginary + a.imaginary)
+  def subtract(a: Complex): Complex = Complex(real - a.real, imaginary - a.imaginary)
+
+  def +(a: Complex): Complex = add(a)
+  def -(a: Complex): Complex = subtract(a)
+}
+
+val x = Complex(8, 7)
+val y = Complex(4, 9)
+
+//可以直接這樣寫
+println("x add y = " + (x add y))
+println("x subract y = " + (x subtract y))
+
+//只有更簡潔
+println("x + y = " + (x + y))
+println("x - y = " + (x - y))
+
+```
+
+#### 優先順序
+
+當有多個operator的時候就會有有限順序的問題。如果沒有用`()`包起來的話就會依照下面的順序
+
+```
+(characters not shown below)
+* / %
++ -
+:
+= !
+< >
+&
+^
+|
+(all letters)
+```
+
+#### Advanced
+如果在operator的後面加上`:`就可以讓在使用的時候將整個被呼叫的物件和參數的順序調換。
+
+```scalaFiddle
+//建立一個List(List就是一種Seq)
+val a = List(1, 2, 3, 4, 5)
+
+//append
+println("6 appended = " + (a :+ 6))
+
+//prepend
+println("0 prepended = " + (0 +: a))
+
+//prepend using dot notation
+println("(0 +: a) == (a.+:(0)) => " + ((0 +: a) == a.+:(0))) 
+
+```
+
+## String
+
+字串的宣告方式主要有兩種`"`和`"""`兩種。`"`就跟大部分其它語言一樣。`"""`跟`"`的方式是一樣的，可是我們在裡面就可以很自由的使用「換行」或`"`都不用擔心要escape。
+
+String的合併是用`+`。
+
+```scalaFiddle
+
+val s = "Hello " + "ScalaKitchen"
+val s1 = "Hello\"Scala\nKitchen"
+
+val s2 = """Hello"Scala
+Kitchen"""
+println(s)
+println("=========")
+println(s1)
+println("=========")
+println(s2)
+println("=========")
+println("s1 == s2: " + (s1 == s2))
+
+```
+
+#### String interpolation
+
+String interpolation有兩種基本的用法。
+1. 在String的開頭加上`s`就可以在String裡面使用環境變數讓字串的組成更好用。
+
+1. 在String的開頭加上`f`就可以有`printf`的功效。然後再結合上面的功能就可以同時format參數了。
+
+```scalaFiddle
+
+val name = "ScalaKitchen"
+
+//如果變數名稱比較複雜可以使用${name}
+val hello = s"Hello $name" 
+
+println(hello)
+println("=========")
+
+val kitchenWidth = 10
+val kitchenSize = f"$name is $kitchenWidth%2.2f meters wide"
+
+println(kitchenSize)
+
+```
+[more](http://docs.scala-lang.org/overviews/core/string-interpolation.html)
+
+## =>
+
+這通常被叫做 "Fat Arrow"，可是在Scala裡這叫 "[Right Arrow](http://docs.scala-lang.org/tutorials/scala-for-java-programmers.html)"。
+這主要用途有：
+  1. 宣告anonymous function
+  1. 表示一個變數的類型為某種型態的function
+  1. 一個特別的參數類型, Called-by-name parameter
+
+#### __Anonymous Function__
+
+```scalaFiddle
+//用anonymous function的方式宣告一個function再assign給addOne這個變數
+val addOne = (i: Int) => i + 1
+
+//等同於
+def addOneF(i: Int): Int = i + 1
+
+println("addOne == addOneF: " + (addOne(1) == addOneF(1)))
+
+```
+
+#### __Function Type__
+
+```scalaFiddle
+//跟上面的基本一樣，只是明確的定義addOne的類型
+val addOne: Int => Int = (i: Int) => i + 1
+
+//表示參數也是一個function，而這個function是拿一個Int然後產出一個Int
+def doSomethingWithOne(f: Int => Int): Int = f(1)
+println("multiply by 10: " + doSomethingWithOne((i: Int) => i * 10))
+println("=========")
+//直接把類型符合的function傳進去
+def multiplyBy10(i: Int) = i * 10
+println("multiply by 10 second try: " + doSomethingWithOne(multiplyBy10))
+println("=========")
+//直接用上面的addOne
+println("add one: " + doSomethingWithOne(addOne))
+
+```
+#### __Called-by-name parameter__
+
+這種parameter比較特別。通常參數會被在傳遞到function之前就被執行完而且得到一個預期的值。
+Called-by-name parameter在被傳入function的時候並不會被執行，而是在function裡面被使用的時候才執行而求出期望的值。
+這樣可以在當此參數沒用被使用的時候節省運算的資源。
+
+Note: 這個類型的parameter跟lazy很像可是卻不像lazy再被使用過一次就不會再被計算，每一次使用都會執行一次裡面的邏輯。
+
+```scalaFiddle
+
+def addOrNot(i: => Int, toAdd: Boolean): Int = {
+  println("add or not? that is the question")
+  val magic = 42
+  if(toAdd) {
+    magic + i
+  }
+  else {
+    magic
+  }
+}
+
+//"add i"不會被印出來
+print("magic number: " + addOrNot({println("add i"); 10}, false))
+
+println("=========")
+
+//注意"add i"會在"add or not? that is the question"之後才被印出
+print("no a magic number: " + addOrNot({println("add i"); 10}, true))
+
+println("=========")
+
+//執行parameter的邏輯兩次
+def add(i: => Int): Int = i + i
+
+add({println("call me twice"); 10})
+
+```
+
+
