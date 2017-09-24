@@ -11,7 +11,7 @@
 
 map的意思就從一個類別轉換成另外一個類別。
 例如，把Int轉換成String就是Int map to String。
-map就會需要用一個function來做到轉換的功能，map的method signature長這樣`.map(f: A => B)`。這裡`f`就是一個可以把A map到B的function。
+map就會需要用一個function來做到轉換的功能，map的method signature長這樣`.map(f: A => B)`。這裡f就是一個可以把A轉換到B的function(A和B不一定是不同類型，也可以是同樣類型)。
 
 在scala很多資料結構都有map這個功能。這個功能非常的強大。它讓你可以在不重組整個資料結構就可以將裡面的內容轉換成另外一種類別。
 
@@ -38,6 +38,7 @@ println(studentNumbers.map(n => Student(n, "anonymous student " +n)))
 ## flatMap
 
 Map是一個將A轉成B的function。可是在實務上常常會是A轉成List[B]。
+而`flatMap`的用意就是可以把裡面一層的資料結構壓平，直接將資料攤平在外面的階層。
 例如我們有一個method`def toStudents(classNumber: Int): List[Student]`，它是用課堂編號取得所有在這個課堂內的學生清單。
 可是需求是從一個課堂編號的清單取得所有這些課堂內的學生（不管是否重複）。
 
@@ -74,8 +75,6 @@ println(classNumbers.flatMap(toStudents))
 ```
 
 這裡我們要的`List[Student]`就很輕易的得到了，而且也沒有那個空的List在佔位置了。
-
-`flatMap`的用意就是可以把裡面一層的資料結構壓平，直接將資料攤平在外面的階層。
 
 ## filter
 
