@@ -14,4 +14,8 @@ A Scala tutorial with embedded ScalaFiddle examples.
     * [infix operator](https://scalataiwan.github.io/ScalaKitchen/#infix-operator)
     * [String](https://scalataiwan.github.io/ScalaKitchen/#string)
     * [=>](https://scalataiwan.github.io/ScalaKitchen/#section)
+* [map/flatMap/filter](https://scalataiwan.github.io/ScalaKitchen/map.html)
+    * [map](https://scalataiwan.github.io/ScalaKitchen/map.html#map)
+    * [flatMap](https://scalataiwan.github.io/ScalaKitchen/map.html#flatmap)
+    * [filter](https://scalataiwan.github.io/ScalaKitchen/map.html#filter)
 * [Recursive](https://scalataiwan.github.io/ScalaKitchen/recursive.html)

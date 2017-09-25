@@ -494,4 +494,24 @@ add({println("call me twice"); 10})
 
 ```
 
+## Tuple
+
+Tuple跟List/Seq在集合的概念上是很像的。只是它的類型不被限定只有一種，而是每一個元素都可以指定類型。
+Tuple的大小也是在宣告的時候就決定的，不像List可以無限延展。
+可是在Scala裡面，它最多只能有22個元素。
+
+Tuple的宣告就是用小括號包起來。要取得裡面的元素就用`._1`, `._2`依照位置取得，從1開始。
+通常只有2個元素的Tuple也被稱為Pair。
+
+```scalaFiddle
+
+val tuple2 = (1, "one")
+println(tuple2)
+val tuple3 = (2, "two", 2.2f)
+println("=======")
+println(tuple3)
+println(s"first: ${tuple3._1}, second: ${tuple3._2}, third: ${tuple3._3}")
+
+```
+
 
