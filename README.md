@@ -20,4 +20,4 @@ A Scala tutorial with embedded ScalaFiddle examples.
     * [flatMap](https://scalataiwan.github.io/ScalaKitchen/map.html#flatmap)
     * [filter](https://scalataiwan.github.io/ScalaKitchen/map.html#filter)
 * [Recursive](https://scalataiwan.github.io/ScalaKitchen/recursive.html)
-* [Implicit](https://scalataiwan.github.io/ScalaKitchen/implicits.html)
+* [Implicit](https://scalataiwan.github.io/ScalaKitchen/implicit.html)
