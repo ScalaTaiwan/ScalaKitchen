@@ -135,7 +135,6 @@ Note:
 
 另外如果使用Eclipse或Intellij開發的朋友，如果在method或變數名稱下面多了一個底線的話就是被套用了implicit。例如`.toList`，![Intellij Sample](unchecked:implicit_IDE.png)
 
-
 ### ~~View Bounds~~
 
 [@deprecated](https://issues.scala-lang.org/browse/SI-7629)
@@ -192,7 +191,7 @@ println(s"ScalaKitchen contains 's'? ${contains(s, 's')}")
 在這裡`LA <% List[A]`就被稱為 **_View Bound_**。`LA <% List[A]`為上限_Upper Bound_，`LA %> List[A]`為下限_Lower Bound_。
 可以把這個當作是一種“證明”，在執行的環境下，你必須要證明`LA`在某種邏輯下也是`List[A]`的一種，你才能使用這個method。同樣的這個檢查都會在compile time的時候就做完。
 
-### <a href="context-bound"></a>Context Bound
+### Context Bound
 
 另外一個常看到的用法叫context bound。這給大量的使用在[type class pattern](https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html)裡面。這個pattern讓沒有implement一些interface的class擁有一樣的功能。它同時具有[bridge pattern](https://en.wikipedia.org/wiki/Bridge_pattern)和[adapter pattern](https://en.wikipedia.org/wiki/Adapter_pattern)的特性。
 
@@ -227,8 +226,8 @@ def compareWithBound[A : Ordering](a: A, a1: A): Int = {
   else if(ordering.gt(a, a1)) 1
   else -1
 }
-println("student 3還是在student 1後面: " + (compareWithBound(s3, s1) == 1))
 
+println("student 3還是在student 1後面: " + (compareWithBound(s3, s1) == 1))
 ```
 `[A: Ordering]`就形成了這個method的context bound。
 如果沒有一個這樣的context bound，Ordering[A]的時候會怎樣？
@@ -279,7 +278,6 @@ println(s"ScalaKitchen contains 's'? ${containsWithContexBound(s, 's')}")
 --- 
 Reference:
   1. [Replace View Bound with Context Bound](http://jatinpuri.com/2014/03/replace-view-bounds/)
-
 
 ### Implicit的來源跟順序
 
