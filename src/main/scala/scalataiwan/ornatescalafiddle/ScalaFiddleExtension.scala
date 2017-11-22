@@ -58,7 +58,8 @@ class ScalaFiddleExtension(configuredObject: ConfiguredObject) extends Extension
             as.get("description").orElse(n.config.description).getOrElse(""),
             (as.get("libraries").map(_.split(',').toList).getOrElse(List()) ++ n.config.libraries).distinct,
             n.fcb.getLiteral)
-          w.raw(s"""<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="$url"></iframe>""")
+          val height = as.get("height").getOrElse("300")
+          w.raw(s"""<iframe height="${height}" frameborder="0" style="width: 100%; overflow: hidden;" src="$url"></iframe>""")
         })
       }
     }
