@@ -242,7 +242,7 @@ def compareWithBound[A : Ordering](a: A, a1: A): Int = {
 
 case class Teacher(id: String, name: String)
 //可以嘗試把打開這個implicit就可以讓這段程式碼compile
-//implicit val teacherOrdering = Ordering.by[Teacher, Int](t => t.id)
+//implicit val teacherOrdering = Ordering.by[Teacher, String](t => t.id)
 
 val t1 = Teacher("ID1", "Scala")
 val t2 = Teacher("ID2", "Kitchen")
