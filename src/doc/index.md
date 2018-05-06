@@ -7,7 +7,7 @@
 
 # Welcome to ScalaKitchen!
 
-```scalaFiddle libraries="Java8 Time-0.1.0"
+```scalaFiddle libraries="Java8 Time-0.2.3"
 // 可以在這邊改程式喔，改好之後按下「左上角」的 Run
 import java.time._
 
@@ -113,7 +113,7 @@ def repeat(w: String,
   2 == 0)
   w * count
    else
-  w.toLowerCase() * 
+  w.toLowerCase() *
     count
 
 val res = repeat(repeat("A", 4) +
@@ -161,15 +161,15 @@ def b() = a + 1
 {
   val a = 11
   def c() = a + 1
-  
+
   {
     val a = 12
     def c() = a + 1
-    
+
     println("b() = " + b())
     println("c() = " + c())
   }
-  
+
   println("c() = " + c())
 }
 ```
@@ -182,7 +182,7 @@ def b() = a + 1
 val res = {
   def ulu(str: String) =
     str.toUpperCase + str.toLowerCase + str.toUpperCase
-  
+
   ulu("Scala") + " " + ulu("Taiwan")
 }
 
@@ -365,7 +365,7 @@ println("6 appended = " + (a :+ 6))
 println("0 prepended = " + (0 +: a))
 
 //prepend using dot notation
-println("(0 +: a) == (a.+:(0)) => " + ((0 +: a) == a.+:(0))) 
+println("(0 +: a) == (a.+:(0)) => " + ((0 +: a) == a.+:(0)))
 
 ```
 
@@ -404,7 +404,7 @@ String interpolation有兩種基本的用法。
 val name = "ScalaKitchen"
 
 //如果變數名稱比較複雜可以使用${name}
-val hello = s"Hello $name" 
+val hello = s"Hello $name"
 
 println(hello)
 println("=========")
@@ -513,5 +513,3 @@ println(tuple3)
 println(s"first: ${tuple3._1}, second: ${tuple3._2}, third: ${tuple3._3}")
 
 ```
-
-
