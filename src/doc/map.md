@@ -8,16 +8,27 @@
 # map/flatMap/filter
 
 ## map
+`map`在數學上也稱[映射](https://zh.wikipedia.org/wiki/%E6%98%A0%E5%B0%84), 
+而在scala中即表示任一個集合`List[A]`中的每個元素`a`均可透過函數`f`轉換為元素`b`, 進而產生一個新的集合`List[B]`, 如下圖 
 
-map的意思就從一個類別轉換成另外一個類別。
+<img class="float-center" src="images/map.png" style="height:130px"/>
+
 例如，把Int轉換成String就是Int map to String。
+
+
 map就會需要用一個function來做到轉換的功能，map的method signature長這樣`.map(f: A => B)`。這裡f就是一個可以把A轉換到B的function(A和B不一定是不同類型，也可以是同樣類型)。
 
 在scala很多資料結構都有map這個功能。這個功能非常的強大。它讓你可以在不重組整個資料結構就可以將裡面的內容轉換成另外一種類別。
 
 map的method signature長這樣`.map(f: A => B)`
 
-如果你有一個`List[Int]`，這個List裡面都是學生學號，可是你要的是這些學號對應的學生。
+```scala
+//example:  Int map to string
+val ints:List[Int]=List(1,2,3,4,5)
+val strs:List[String]=ints.map(i=>i.toString)
+```
+
+另一個例子，如果你有一個`List[Int]`，這個List裡面都是學生學號，可是你要的是這些學號對應的學生。
 
 ```scalaFiddle
 
@@ -37,7 +48,7 @@ println(studentNumbers.map(n => Student(n, "anonymous student " +n)))
 
 ## flatMap
 
-Map是一個將A轉成B的function。可是在實務上常常會是A轉成List[B]。
+`map`是一個將A轉成B的function。可是在實務上常常會是A轉成List[B]。
 而`flatMap`的用意就是可以把裡面一層的資料結構壓平，直接將資料攤平在外面的階層。
 例如我們有一個method`def toStudents(classNumber: Int): List[Student]`，它是用課堂編號取得所有在這個課堂內的學生清單。
 可是需求是從一個課堂編號的清單取得所有這些課堂內的學生（不管是否重複）。
