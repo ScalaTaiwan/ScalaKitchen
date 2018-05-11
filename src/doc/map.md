@@ -11,7 +11,7 @@
 `map`在數學上也稱[映射](https://zh.wikipedia.org/wiki/%E6%98%A0%E5%B0%84), 
 而在scala中即表示任一個集合`List[A]`中的每個元素`a`均可透過函數`f`轉換為元素`b`, 進而產生一個新的集合`List[B]`, 如下圖 
 
-<img class="float-center" src="images/map.png" style="height:130px"/>
+<img class="float-center" src="images/map.png" style="height:200px"/>
 
 例如，把Int轉換成String就是Int map to String。
 
@@ -90,6 +90,13 @@ println(classNumbers.flatMap(toStudents))
 ## filter
 
 filter的概念很簡單，就是過濾，把不要的東西刪除掉並把符合條件的留下。
+
+filter的method signature長這樣`.filter(f: A => Boolean)`,
+`f`是一個回傳Boolean值的函數，透過`f`過濾出符合條件的元素，如下圖
+
+<img class="float-center" src="images/filter.png" style="height:200px"/>
+
+``
 
 ```scalaFiddle
 
