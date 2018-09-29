@@ -111,7 +111,9 @@ class ScalaFiddleExtension(configuredObject: ConfiguredObject) extends Extension
         ("libraries" -> libraries.map(getLibrary(_))) ~
         ("scalaVersion" -> "2.12") ~
         ("available" -> List[String]()) ~
-        ("author" -> List[String]()))
+        ("author" -> List[String]()) ~
+        ("modified" -> System.currentTimeMillis.toString)
+      )
     Try {
       val result = Http("https://scalafiddle.io/api/scalafiddle/shared/Api/save")
         .timeout(10000, 30000)
