@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html class="no-js" lang="eng" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implicits</title>
+    <link rel="stylesheet" href="theme/css/foundation.min.css">
+    <link rel="stylesheet" href="theme/css/app.css">
+     <link rel="icon" href="favicon.png" /> 
+     <link rel="stylesheet" href="theme/highlight.js/styles/github-gist.css">  <link rel="stylesheet" href="theme/css/foundation-icons.custom.css"> 
+    
+     <link rel="start" href="index.html"  title="Basics"  />  <link rel="prev" href="recursive.html"  title="遞迴"  /> 
+  </head>
+  <body>
+    <div class="expanded row">
+      <div class="small-12 medium-12 large-12 columns align-self-top">
+        <div class="row">
+          
+          <header class="large-12 columns align-self-top a_header">
+            <div class="row">
+              <div class="large-12 columns a_limited top-bar">
+                <div class="top-bar-left">
+                  <p>Scala 料理教室</p>
+
+                </div>
+                <div class="top-bar-right align-right row">
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          <div class="small-12 medium-12 large-12 columns align-self-top a_limited a_main">
+            <div class="row">
+              
+              <main class="columns large-order-2 sections" id="_sections">
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_top">
+    
+      
+        <li><a href="recursive.html"  title="遞迴" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><span><span class="a_foundation_icon"></span>  Next</span></li>
+      
+    
+  </ul>
+ 
+                
+                <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'ScalaTaiwan/ScalaTaiwan'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<h1 id="implicits" class="a_section" data-magellan-target="implicits">Implicits<a class="a_hlink" href="#implicits"></a></h1>
+<p>Implicit是一個Scala非常有特色的一個功能。它可以讓使用者省去自己傳入參數的麻煩。讓library的建立者設計簡潔好用但同時保留彈性的API。
+在一般的語言裡，不管我們要做什麼事都必須自行在呼叫或使用的地方寫出我們要呼叫的地方或傳入的參數，這種方式叫explicit。Implicit就是在某些特定的條件下讓你可以不用直接寫出你所要呼叫的method或傳入的參數，把這件事丟給compiler去做。這樣可以達到API的使用方便和程式碼的減少（當然對API/Library有一定了解還是需要的）。Implicit是一個keyword，它可以出現在val，def，class，object前面。當<code class="hljs">implicit</code>出現在這些地方就表示這些東西可以implicitly被使用到。在使用implicit的地方也會用implicit的keyword出現所以不用擔心不知道是不是有implicit的使用。但宣告implicit之後並不表示不能強制傳入自己想要的參數。</p>
+<p>有些人可能會想，既然不用直接宣告要用的東西，那會不會有runtime效能的問題或是增加runtime debug時的複雜度。runtime時的問題都不存在。Implicit是一個在compile time就會被決定的事情。如果implicit的檢查不過，compile是不會成功的。Compile出來的程式碼也是被用implicit的規則計算過後直接inline進去的。所以也不用擔心有runtime被改掉或換掉的問題。</p>
+<p>Implicit基本上分兩種:</p>
+<ol>
+<li>Implicit Parameter</li>
+<li>Implict Conversion</li>
+<li>Implicit Method</li>
+<li>Implict Class</li>
+</ol>
+<h3 id="implicit-parameters" class="a_section" data-magellan-target="implicit-parameters">Implicit Parameters<a class="a_hlink" href="#implicit-parameters"></a></h3>
+<p>Implicit parameter是一種不需要指定宣告傳入就可以使用的參數。Compiler會在compile的時候會在這個call site的context裡面尋找可以使用的parameter然後放入。如果找不到就會有錯。如果要讓我們的method可以使用implicit的參數，只要在參數的前面宣告implicit就可以了。可是通常我們的method都還是會有一些必須讓使用者自行輸入的參數，這時候兩種參數必須被分開在兩個不同的parameter list裡面，而且implicit的必須在最後面。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=ZcRcwcA/0"></iframe>
+<h3 id="implicit-conversion" class="a_section" data-magellan-target="implicit-conversion">Implicit Conversion<a class="a_hlink" href="#implicit-conversion"></a></h3>
+<p>Implicit conversion可以利用implicit的method或class來自動轉換原本的資料型態來免除一些不必要的程式碼。主要發生的地方在當我們需要一個<code class="hljs">B</code>可是我們只有一個<code class="hljs">A</code>的時候。在這裡如果有一個<code class="hljs">f: A =&gt; B</code>的function那就可以直接使用了，可是還是需要去呼叫<code class="hljs">f</code>，<code class="hljs">f(a)</code>。可是如果用implicit，就不需要這麼麻煩了。
+另外像平常在寫Web service的程式的時候通常會直接把物件當作return值回傳。可是其實最後的結果都是由某個framework在後面處理掉了，例如Apache CXF，Jersey，Spring MVC，等。
+Implicit conversion可以達到類似的效果。</p>
+<iframe height="600" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=BYE5NOo/0"></iframe>
+<h3 id="library-pimping" class="a_section" data-magellan-target="library-pimping">Library Pimping<a class="a_hlink" href="#library-pimping"></a></h3>
+<p>知道implicit conversion之後，可以再對這個功能做一些延伸。既然implicit conversion可以再assign和return的時候將A轉成B，那也就可以在使用的當下直接轉成B然後使用B的method。這樣可以創造出一個A也有B的功能的假象。利用這個特性我們可以達到在一個3rd-party library或是被宣告成<code class="hljs">final</code>的class上面加功能，而不影響它原有的source，可是使用起來還是感覺在使用原本的API。這行為被稱為library pimping，或 &quot;pimp my library&quot;。</p>
+<p>常用的class String就是一個final的class。可是在一般的運用上，常常會需要把一個原始的String轉換成要使用的domain object或單純的Int，Double或Date。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=w4Ej4ne/0"></iframe>
+<p>Note:
+其實在Scala內建的library就有應用這樣的技巧。如果注意看一下Scala的String其實就是java.lang.String。可是為什麼在寫程式的時候可以寫<code class="hljs">.toDouble</code>或<code class="hljs">.toInt</code>甚至是<code class="hljs">.reverse</code>或<code class="hljs">.foldLeft</code>等？這就是利用這種implicit conversion的技巧達到在原本沒什麼功能的String上加上這些功能而又不影響原本String該有的特性。至於負責做String轉換的程式在哪裡就留給有興趣的人去自己去找了。</p>
+<p>另外如果使用Eclipse或Intellij開發的朋友，如果在method或變數名稱下面多了一個底線的話就是被套用了implicit。例如<code class="hljs">.toList</code>，<img src="implicit_IDE.png" alt="Intellij Sample" /></p>
+<h3 id="view-bounds" class="a_section" data-magellan-target="view-bounds"><del>View Bounds</del><a class="a_hlink" href="#view-bounds"></a></h3>
+<p><a href="https://issues.scala-lang.org/browse/SI-7629">@deprecated</a>
+<em>雖然是一個被deprecate的pattern（被<a href="implicit.html#context-bound">Context Bound</a>取代），可是概念比較基礎，建議還是依序看完。</em></p>
+<p>如果我們將implicit parameter跟conversion合併在一起還可以達到其它的效果例如現在要介紹的view bound。
+例如我們想要接受一個<code class="hljs">List[A]</code>然後檢查裡面是否存在<code class="hljs">a</code>。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">contains</span></span>[<span class="hljs-type">A</span>](as: <span class="hljs-type">List</span>[<span class="hljs-type">A</span>], a: <span class="hljs-type">A</span>): <span class="hljs-type">Boolean</span> = as.contains(a)
+</code></pre>
+</div></div>
+<p>可是其實只要是任何可以被轉換成List[A]的物件，都可以用這個程式。像是String可以被轉成List所以應該也要可以用這個method。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">val</span> sl = <span class="hljs-string">"abc"</span>.toList
+contains(sl, 'a')
+</code></pre>
+</div></div>
+<p>這樣呼叫起來很麻煩我們可以把<code class="hljs">.toList.map</code>變成一個implicit conversion然後在<code class="hljs">contains</code>上面加一個implicit parameter。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=lmO94TA/0"></iframe>
+<p>利用有點syntax sugar，<code class="hljs">contains</code>還可以被改寫的簡單一點</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=7Xne7yl/0"></iframe>
+<p>在這裡<code class="hljs">LA &lt;% List[A]</code>就被稱為 <strong><em>View Bound</em></strong>。<code class="hljs">LA &lt;% List[A]</code>為上限_Upper Bound_，<code class="hljs">LA %&gt; List[A]</code>為下限_Lower Bound_。
+可以把這個當作是一種“證明”，在執行的環境下，你必須要證明<code class="hljs">LA</code>在某種邏輯下也是<code class="hljs">List[A]</code>的一種，你才能使用這個method。同樣的這個檢查都會在compile time的時候就做完。</p>
+<h3 id="context-bound" class="a_section" data-magellan-target="context-bound">Context Bound<a class="a_hlink" href="#context-bound"></a></h3>
+<p>另外一個常看到的用法叫context bound。這給大量的使用在<a href="https://blog.scalac.io/2017/04/19/typeclasses-in-scala.html">type class pattern</a>裡面。這個pattern讓沒有implement一些interface的class擁有一樣的功能。它同時具有<a href="https://en.wikipedia.org/wiki/Bridge_pattern">bridge pattern</a>和<a href="https://en.wikipedia.org/wiki/Adapter_pattern">adapter pattern</a>的特性。</p>
+<p>用scala的standard library裡面的<code class="hljs">Ordering</code>來做範例(<code class="hljs">Ordering</code>基本上就是Java的<code class="hljs">Comparator</code>)。</p>
+<p>使用<code class="hljs">Ordering</code>來付與任何物件比較與順序的能力。
+之後再利用syntax sugar讓是用此pattern的API看起來更簡潔跟明確。</p>
+<iframe height="600" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=QWn8Em4/0"></iframe>
+<p><code class="hljs">[A: Ordering]</code>就形成了這個method的context bound。
+如果沒有一個這樣的context bound，Ordering[A]的時候會怎樣？</p>
+<iframe height="400" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=zPTJQIz/0"></iframe>
+<p>之前有提到View Bound被deprecate了，那就應該要思考怎麼用Context Bound的方式做。這個例子比較特殊，要用context bound必須繞一點路，可是還是可以做的到的。要先建立一個<code class="hljs">type</code>，然後再用一個很奇怪的syntax來宣告我們的type。如果現階段看不懂沒關係，這只是要證明基本上所有的view bound都可以重寫成context bound。這個use case如果用type class的方式實作會是一個比較漂亮的作法。（<a href="http://danielwestheide.com/blog/2013/02/06/the-neophytes-guide-to-scala-part-12-type-classes.html">type class</a>之後會再說明）</p>
+<iframe height="400" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=cbNoIOf/0"></iframe>
+<hr />
+<p>Reference:</p>
+<ol>
+<li><a href="http://jatinpuri.com/2014/03/replace-view-bounds/">Replace View Bound with Context Bound</a></li>
+</ol>
+<h3 id="implicit的來源跟順序" class="a_section" data-magellan-target="implicit的來源跟順序">Implicit的來源跟順序<a class="a_hlink" href="#implicit的來源跟順序"></a></h3>
+<p>看完implicit可以做到的事之後，就有來看implicit到底怎麼進入使用的scope/context，來達到使用者感覺不到和美化API的效果。</p>
+<p>先了解compiler什麼時候知道或會嘗試套用implicit?</p>
+<ol>
+<li>在一個物件上呼叫一個method可是這個物件並沒有這個method</li>
+<li>在呼叫一個有implicit parameter的method</li>
+</ol>
+<p>Compiler在尋找implicit的順序如下：(1會比2有優先權，如果有相等優先權，就會比較那一個比較精準)</p>
+<ol>
+<li>在當下的scope尋找</li>
+</ol>
+<ul>
+<li><a href="implicit.html#same-implicit-scope">宣告在當下scope的implicit</a></li>
+<li><a href="implicit.html#explicit-import">explicit import</a></li>
+<li><a href="implicit.html#wildcard-import">wildcard import</a></li>
+</ul>
+<ol start="2">
+<li>尋找相關類別(associated type)</li>
+</ol>
+<ul>
+<li><a href="implicit.html#companion-objects">companion objects</a></li>
+<li><a href="implicit.html#argument-implicit-scope">implicit scope of an argument's type</a></li>
+<li><a href="implicit.html#implicit-scope-of-type-arguments">implicit scope of type arguments</a></li>
+<li><a href="implicit.html#outer-object-nested">outer objects for nested types</a></li>
+</ul>
+<p>這些到底是什麼意思呢？
+以下是範例：</p>
+<ul>
+<li><a id="same-implicit-scope"></a><strong>宣告在當下scope的implicit</strong></li>
+</ul>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> n: <span class="hljs-type">Int</span> = <span class="hljs-number">5</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span></span>(x: <span class="hljs-type">Int</span>)(<span class="hljs-keyword">implicit</span> y: <span class="hljs-type">Int</span>) = x + y
+add(<span class="hljs-number">5</span>) <span class="hljs-comment">//將n從當下的scope拿進來，也是最直接的</span>
+</code></pre>
+</div></div>
+<ul>
+<li><a id="explicit-import"></a><strong>explicit import</strong></li>
+</ul>
+<p>直接將要用的implicit指名道姓的import進來</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">import</span> scala.collection.<span class="hljs-type">JavaConversions</span>.mapAsScalaMap
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">env</span> </span>= <span class="hljs-type">System</span>.getenv() <span class="hljs-comment">// 這裡是一個Java map</span>
+<span class="hljs-keyword">val</span> term = env(<span class="hljs-string">"TERM"</span>)    <span class="hljs-comment">// 直接使用mapAsScalaMap這個implicit conversion將Java Map轉成Scala Map</span>
+</code></pre>
+</div></div>
+<ul>
+<li><a id="wildcard-import"></a><strong>wildcard import</strong></li>
+</ul>
+<p>用<code class="hljs">_</code>的方式import進來，會被explicit import的方式蓋過，因為explicit import比較精確。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">import</span> scala.collection.<span class="hljs-type">JavaConversions</span>._
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">env</span> </span>= <span class="hljs-type">System</span>.getenv() <span class="hljs-comment">// 這裡是一個Java map</span>
+<span class="hljs-keyword">val</span> term = env(<span class="hljs-string">"TERM"</span>)    <span class="hljs-comment">// 使用JavaConversions裡面的mapAsScalaMap這個implicit conversion將Java Map轉成Scala Map</span>
+</code></pre>
+</div></div>
+<ul>
+<li>
+<p><a id="companion-objects"></a><strong>companion objects</strong></p>
+<p>在這裡companion object會在兩個地方出現</p>
+<ol>
+<li><strong>&quot;source&quot; object的companion object</strong></li>
+</ol>
+<p>舉例在下面的例子在<code class="hljs">Option</code>的companion object裡面有一個implicit coverter將<code class="hljs">Option</code>轉換成<code class="hljs">Iterable</code>，所以在任何時候都可以在<code class="hljs">Option</code>上使用<code class="hljs">Iterable</code>的method或是將<code class="hljs">Option</code>傳給需要<code class="hljs">Iterable</code>的method。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">for</span> {
+  x &lt;- <span class="hljs-type">List</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+  y &lt;- <span class="hljs-type">Some</span>('x')
+} <span class="hljs-keyword">yield</span>, (x, y)
+</code></pre>
+</div></div>
+<p>會被轉換成</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-type">List</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>).flatMap(x =&gt; <span class="hljs-type">Some</span>('x').map(y =&gt; (x, y)))
+</code></pre>
+</div></div>
+<p>可是在這裡<code class="hljs">List.flatMap</code>要求的是<code class="hljs">TraversableOnce</code>。可是<code class="hljs">Option</code>不是。這時候compiler就會在<code class="hljs">Option</code>的companion object裡面找到這個implicit coverter然後將<code class="hljs">Option</code>轉換成<code class="hljs">Traversable</code>同時也是<code class="hljs">TraversableOnce</code>。</p>
+<ol start="2">
+<li><strong>要求類型的companion object</strong></li>
+</ol>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-type">List</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>).sorted
+</code></pre>
+</div></div>
+<p>在這裡<code class="hljs">.sorted</code>需要一個implicit的<code class="hljs">Ordering</code>。這時候compiler會在Ordering的companion object裡面尋找，會找到一個implicit<code class="hljs">Ordering[Int]</code>。另外如果<code class="hljs">Ordering</code>有super class的companion object的話，compiler也會進去找。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=V1S1JpW/0"></iframe></li>
+<li>
+<p><a id="argument-implicit-scope"></a><strong>implicit scope of an argument's type</strong></p>
+<p>如果一個method的argument是type<code class="hljs">A</code>那<code class="hljs">A</code>的&quot;implicit scope&quot;也會被納入(Implicit Scope就是一整個這一篇談到的所有implicit檢查條件重複的檢查一直到最後找到或完全找不到)。這表示不止是<code class="hljs">A</code>裡面的implicit conversion會被套用在這個parameter上，而是一整個expression都有可能用的到。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=Tj9Smvi/0"></iframe></li>
+<li>
+<p><a id="implicit-scope-of-type-arguments"></a><strong>implicit scope of type arguments</strong></p>
+<p>這是讓type class可以正常運作的條件。以<code class="hljs">Ordering</code>為例，<code class="hljs">Ordering</code>本身就有一下implicit可以用，可是卻不能在它裡面再增加。那怎麼能讓在需要<code class="hljs">Ordering</code>的時候可以有需要的implicit <code class="hljs">Ordering</code>呢？</p>
+<p>如果有：</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span>(<span class="hljs-params">val n: <span class="hljs-type">Int</span></span>)</span>
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">A</span> </span>{
+    <span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> ord = <span class="hljs-keyword">new</span> <span class="hljs-type">Ordering</span>[<span class="hljs-type">A</span>] {
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compare</span></span>(x: <span class="hljs-type">A</span>, y: <span class="hljs-type">A</span>) = implicitly[<span class="hljs-type">Ordering</span>[<span class="hljs-type">Int</span>]].compare(x.n, y.n)
+    }
+}
+</code></pre>
+</div></div>
+<p>然後再來要sort</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-type">List</span>(<span class="hljs-keyword">new</span> <span class="hljs-type">A</span>(<span class="hljs-number">5</span>), <span class="hljs-keyword">new</span> <span class="hljs-type">A</span>(<span class="hljs-number">2</span>)).sorted
+</code></pre>
+</div></div>
+<p>這裡我們知道<code class="hljs">sorted</code>需要一個<code class="hljs">Ordering[A]</code>，可是在<code class="hljs">Ordering</code>跟<code class="hljs">List</code>(source type)裡面都沒有。這時候就會進<code class="hljs">A</code>去找。<code class="hljs">A</code>就是<code class="hljs">Ordering[A]</code>的 <strong><em>type argument</em></strong>。</p>
+<p><strong>Note</strong>: 如果有看過List/Seq的ScalaDoc的話，可能在很多API會注意到一個<code class="hljs">CanBuildFrom</code>的implicit參數，它就是用這個機制在你不需要知道去哪裡找這個東西的時候幫你放進來的。</p>
+</li>
+<li>
+<p><a id="outer-object-nested"></a><strong>outer objects for nested types</strong></p>
+<p>當有inner class的時候，該class的outer class也會成為被搜尋implicit的對象。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=ShwxoPp/0"></iframe></li>
+</ul>
+<p><strong><em>Note</em>: Implicit Scope包含package object</strong></p>
+<p>Implicit Scope的範圍另外包含的對應types所屬的package的package object。</p>
+<p><em>(以下範例必須貼到一個scala檔案裡面用main來執行)</em></p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">package</span> a {
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span> (<span class="hljs-params">val n: <span class="hljs-type">Int</span></span>)</span>
+}
+
+<span class="hljs-keyword">package</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">a</span> </span>{
+  <span class="hljs-keyword">implicit</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">aToString</span></span>(a: <span class="hljs-type">A</span>): <span class="hljs-type">String</span> = <span class="hljs-string">s"A: <span class="hljs-subst">${a.n}</span>"</span>
+}
+
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Test</span> </span>{
+    <span class="hljs-keyword">import</span> a._
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span></span>(s: <span class="hljs-type">Array</span>[<span class="hljs-type">String</span>]) = {
+      <span class="hljs-keyword">val</span> as: <span class="hljs-type">String</span> = <span class="hljs-keyword">new</span> <span class="hljs-type">A</span>(<span class="hljs-number">100</span>)
+      println(as)
+    }
+}</code></pre>
+<a href="https://github.com/ScalaTaiwan/ScalaKitchen/src/main/scala/scalataiwan/snippet/PackageImplicit.scala" class="a_sourcelink">PackageImplicit.scala</a></div></div>
+<hr />
+<p>References:</p>
+<ol>
+<li><a href="https://www.scala-lang.org/files/archive/spec/2.12/07-implicits.htm">Scala Doc</a></li>
+<li><a href="https://stackoverflow.com/questions/5598085/where-does-scala-look-for-implicits">Stackoverflow</a></li>
+<li><a href="http://jsuereth.com/scala/2011/02/18/2011-implicits-without-tax.html">Implicits without the import tax</a></li>
+<li><a href="https://blog.codecentric.de/en/2015/03/scala-type-system-parameterized-types-variances-part-1/">The Scala Type System</a></li>
+<li><a href="https://issues.scala-lang.org/browse/SI-4427">Implicit scope include package object</a></li>
+</ol>
+
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_bottom">
+    
+      
+        <li><a href="recursive.html"  title="遞迴" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><span><span class="a_foundation_icon"></span>  Next</span></li>
+      
+    
+  </ul>
+ 
+              </main>
+              
+              
+                <div data-sticky-container class="small-12 medium-12 large-2 large-order-1 columns a_sitenav_container">
+                  <nav class="a_sitenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                    
+                    <ul>
+                       
+  <li >
+    
+      
+        <a href="index.html">Basics</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="map.html">map/flatMap/filter</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="recursive.html">遞迴</a>
+      
+    
+    
+  </li>
+  
+  <li  class="a_thispage" >
+    
+      
+        <a href="implicit.html">Implicits</a>
+      
+    
+    
+  </li>
+ 
+                    </ul>
+                    
+                    
+                  </nav>
+                </div>
+              
+              
+              
+                <div class="small-12 medium-12 large-2 large-order-3 columns a_show-for-xlarge" data-sticky-container>
+                  <nav class="a_pagenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                     <header><p>On This Page</p>
+</header> 
+                    <ul class="vertical menu" data-magellan>
+                       
+  
+    <li>
+      
+         <a href="#implicits">Implicits</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#implicit-parameters">Implicit Parameters</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#implicit-conversion">Implicit Conversion</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#library-pimping">Library Pimping</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#view-bounds">View Bounds</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#context-bound">Context Bound</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#implicit的來源跟順序">Implicit的來源跟順序</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+ 
+                    </ul>
+                  </nav>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer class="small-12 medium-12 large-12 columns align-self-bottom a_footer">
+        <div class="row">
+          <div class="small-12 medium-12 large-12 columns top-bar">
+            <div class="top-bar-left">
+              
+            </div>
+            <div class="top-bar-right">
+              <p>Generated with <a href="https://github.com/szeiger/ornate">Ornate</a>.</p>
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script src="theme/js/jquery.min.js"></script>
+    <script src="theme/js/what-input.min.js"></script>
+    <script src="theme/js/foundation.min.js"></script>
+    
+    <script src="theme/js/app.js"></script>
+    
+  </body>
+</html>

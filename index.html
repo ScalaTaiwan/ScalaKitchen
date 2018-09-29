@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html class="no-js" lang="eng" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ScalaKitchen!</title>
+    <link rel="stylesheet" href="theme/css/foundation.min.css">
+    <link rel="stylesheet" href="theme/css/app.css">
+     <link rel="icon" href="favicon.png" /> 
+     <link rel="stylesheet" href="theme/highlight.js/styles/github-gist.css">  <link rel="stylesheet" href="theme/css/foundation-icons.custom.css"> 
+    
+     <link rel="start" href="index.html"  title="Basics"  />  <link rel="next" href="map.html"  title="map/flatMap/filter"  /> 
+  </head>
+  <body>
+    <div class="expanded row">
+      <div class="small-12 medium-12 large-12 columns align-self-top">
+        <div class="row">
+          
+          <header class="large-12 columns align-self-top a_header">
+            <div class="row">
+              <div class="large-12 columns a_limited top-bar">
+                <div class="top-bar-left">
+                  <p>Scala 料理教室</p>
+
+                </div>
+                <div class="top-bar-right align-right row">
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          <div class="small-12 medium-12 large-12 columns align-self-top a_limited a_main">
+            <div class="row">
+              
+              <main class="columns large-order-2 sections" id="_sections">
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_top">
+    
+      
+        <li><span><span class="a_foundation_icon"></span>  Previous</span></li>
+      
+    
+      
+        <li><a href="map.html"  title="map/flatMap/filter" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+                
+                <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'ScalaTaiwan/ScalaTaiwan'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<h1 id="welcome-to-scalakitchen" class="a_section" data-magellan-target="welcome-to-scalakitchen">Welcome to ScalaKitchen!<a class="a_hlink" href="#welcome-to-scalakitchen"></a></h1>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=Ze8DhcJ/0"></iframe>
+<p>Scala 料理教室希望藉由簡單的程式範例，讓大家快速上手 Scala，目標是讓對寫程式不熟的朋友，也可以選擇 Scala 作為他的第一個深入的程式語言。
+本教室由 ScalaTaiwan 社群維護，如在學習上發現任何問題或建議，都歡迎到我們的 <a href="https://gitter.im/ScalaTaiwan/ScalaTaiwan">Gitter聊天室</a> 聊聊。
+在教室中常常會看到像上面的 ScalaFiddle 料理台，請盡情地亂改 code，跑跑看，有任何好奇的東西就用 <code class="hljs">println()</code> 把它印出來瞧瞧吧。</p>
+<h2 id="variables" class="a_section" data-magellan-target="variables">Variables<a class="a_hlink" href="#variables"></a></h2>
+<p>在 Scala 裡要宣告一個變數的寫法是:</p>
+<img class="float-center" src="val.svg" style="height:130px"/>
+<p>Scala 中的所有變數都是有固定型態的，我可以宣告一個整數(Int) <code class="hljs">val a: Int = 10</code>；宣告一個字串(String) <code class="hljs">val b: String = &quot;abc&quot;</code>，但我不能寫 <code class="hljs">val c: Int = &quot;abc&quot;</code></p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=kn9d72P/0"></iframe>
+<p>當 Scala compiler 看到你寫 <code class="hljs">val a: Int = 10</code> 的時候，因為等號右邊是 <code class="hljs">10</code>，他就知道 <code class="hljs">a</code> 一定是 <code class="hljs">Int</code>。所以 <code class="hljs">: Int</code> 的部份其實可以省略不寫:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=aCbNDiq/0"></iframe>
+<h2 id="if-expression" class="a_section" data-magellan-target="if-expression">If Expression<a class="a_hlink" href="#if-expression"></a></h2>
+<img class="float-center" src="if.svg" style="height:100px"/>
+<p>Scala 的 if expression 由上面三個區塊構成，▢ 的部份需要是一個 <code class="hljs">Boolean</code>，例如 <code class="hljs">true</code>、<code class="hljs">false</code>、<code class="hljs">2 &gt; 1</code>、<code class="hljs">a == b</code>，或 <code class="hljs">3 &lt;= 4 &amp;&amp; &quot;a&quot; != &quot;b&quot;</code>。</p>
+<p>△ 與 ◯ 的部份則可以填入一個單純的值、一個 block <code class="hljs">{...}</code> (後面會提到)、或是再塞入另一個 if expression。</p>
+<p>由於整個 if expression 最後會帶著一個值，所以我們可以再用一個 <code class="hljs">val</code> 去把整個 expression 的值接住:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=9kn4IoS/0"></iframe>
+<h2 id="functions" class="a_section" data-magellan-target="functions">Functions<a class="a_hlink" href="#functions"></a></h2>
+<img class="float-center" src="def.svg" style="height:130px"/>
+<p>上面是一個叫做 a 的 function，餵它吃一個 Int 參數 b 之後，經過 △ 的運算，會回傳另外一個 Int。</p>
+<p>△ 的部份可以填入一個單純的值、一個 block <code class="hljs">{...}</code>、或是一個 if expression:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=azCinKq/0"></iframe>
+<p>附帶一提，因為 Scala 很容易有巢狀的程式碼，官方建議的縮排寬度是兩個空格，但就算你的縮排亂七八糟，或在稀奇古怪的地方換行，Scala compiler 還是可以看得懂你的程式。當 compiler 看到某一行不是一個合法的結尾時，它會試著自動把下一行接上來，所以上面的那段程式其實也可以寫成這樣:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=hDN6rmY/0"></iframe>
+<p>只是，compiler 看得懂不代表你看得懂，請善待自己的眼睛，把排版弄整齊一點。</p>
+<p>其他一些可以注意的小地方:</p>
+<ul>
+<li>Compiler 在看完你寫的 △ 內容後，就已經可以自動判斷「回傳值型態」應該要是什麼了，所以回傳值型態的部份其實可以省略不寫。</li>
+<li>當小括號中連一個參數都沒有時，整對小括號也可以省略不寫，但在呼叫時會有一些特殊規則，下面的範例有列出所有可能的呼叫方式(這不用記，不行的寫法 compiler 會告訴你)。</li>
+</ul>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=kaoueyO/0"></iframe>
+<h2 id="blocks" class="a_section" data-magellan-target="blocks">Blocks<a class="a_hlink" href="#blocks"></a></h2>
+<img class="float-center" src="block.svg" style="height:100px"/>
+<p>Block 是由一對大括號包起來的區域，在 block 外面可以寫的東西，在 block 裡面也能寫，例如 variables、if expressions、functions、或是另外一層的 block:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=xJk6I0f/0"></iframe>
+<p>從上面的例子可以發現，block 能夠存取或遮蔽 block 外面的 variable 或 function，只要取了一樣的名字，就會產生遮蔽的效果，以最接近的那個宣告為準。</p>
+<p>接下來，由於 block 本身也是一個 expression (跟 if 一樣)，整個 block 最後會帶著一個值，這個值由 block 中最後一行(或可以說最後一個動作，畢竟 Scala 可以亂換行)的運算結果來決定。我們一樣可以用一個 val 去把這個值接住:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=qqXbpgt/0"></iframe>
+<p>當整個 block 做完運算，取得最後帶的值之後，block 中所有的 variable 跟 function 都會被消滅。也就是說，如果你為了算出某個值，需要建立一些暫時的變數的話，可以把他們包在 block 裡面，避免他們持續佔用記憶體空間。</p>
+<p>最後，我們可以直接把一個 block 塞在 if expression 裡面，或是 def 的後面:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=OSTDM7G/0"></iframe>
+<p>要注意的是，這些大括號並不是 if else 或 def 的一部分，他就只是一個單純的 block，剛好被放在那個位置而已。</p>
+<h2 id="def-vs-val" class="a_section" data-magellan-target="def-vs-val">def vs val<a class="a_hlink" href="#def-vs-val"></a></h2>
+<p>在這裡我們先暫停來釐清一下 <code class="hljs">def</code> 跟 <code class="hljs">val</code> 的差異，由於這兩個 keyword 可以寫出幾乎一模一樣的東西:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=ixTT8Wy/0"></iframe>
+<p>可能有人會疑惑 <code class="hljs">val a1</code> 跟 <code class="hljs">def a2</code> 到底差在哪。簡單地說，寫在 def 後面的東西可能會跑很多次，但 val 後面的東西只會跑一次。這邊因為都是 <code class="hljs">= 10</code> 可能比較不清楚，但如果其中有包含一些動作的話，就可以看出差異:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=RbFwjM5/0"></iframe>
+<p>可以看到我們在 <code class="hljs">println()</code> 裡面各別取用了 <code class="hljs">a1</code> 跟 <code class="hljs">a2</code> 兩次，但 <code class="hljs">&quot;computing a1&quot;</code> 從頭到尾只出現一次，而且是在 <code class="hljs">println(&quot;=====&quot;)</code> 執行之前就先執行了。</p>
+<h2 id="sequences" class="a_section" data-magellan-target="sequences">Sequences<a class="a_hlink" href="#sequences"></a></h2>
+<img class="float-center" src="Seq.svg" style="height:130px"/>
+<p>我們現在知道 <code class="hljs">val</code> 可以拿來放一個 <code class="hljs">Int</code> 或一個 <code class="hljs">String</code> 這類的東西，但如果我們想一口氣擺很多個 <code class="hljs">Int</code> 呢？這時候就可以讓 Scala 的 Collections 家族出場了。</p>
+<p><code class="hljs">Seq</code> (全名 Sequence)應該可以說是 Scala Collections 中，甚至是 Scala 程式中最常見的成員，他可以幫你儲存一整排同樣型態的資料(例如一排的 <code class="hljs">Int</code>、一排的 <code class="hljs">String</code>，甚至是一排的 <code class="hljs">Seq</code>)。利用如上的方式創造一個 <code class="hljs">Seq</code> 之後，我們可以把他指給一個 <code class="hljs">val</code>，接著我們就可以對這個 <code class="hljs">Seq</code> 做些操作，例如查看 <code class="hljs">Seq</code> 中第 3 個位置的值，或是取得 <code class="hljs">Seq</code> 的前三個元素，藉此創造一個新的 <code class="hljs">Seq</code> 等等:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=3OUchXp/0"></iframe>
+<p>從上面的例子我們可以發現 Sequence 實際的 type 其實是 <code class="hljs">Seq[◯]</code> 而不是單純的 <code class="hljs">Seq</code>，◯ 代表的是這個 <code class="hljs">Seq</code> 中所儲存的元素型態。我們的第一個變數 <code class="hljs">s</code> 的型態是 <code class="hljs">Seq[Seq[Int]]</code>，代表他是一個內部裝著 <code class="hljs">Seq</code> 的 <code class="hljs">Seq</code>，並且內部的每個 <code class="hljs">Seq</code> 又裝著 <code class="hljs">Int</code>。一樣，<code class="hljs">: Seq[Seq[Int]]</code> 的部份我們也可以省略不寫，交給 compiler 自動判斷。</p>
+<p>一路看下來，我們遇到過幾種不同的資料型態，例如 <code class="hljs">Int</code>、<code class="hljs">Double</code>、<code class="hljs">String</code>、或現在的 <code class="hljs">Seq</code>。在 Scala 中，這些全部都是某一種 &quot;class&quot;，<code class="hljs">Int</code>、<code class="hljs">Double</code>、<code class="hljs">String</code>、<code class="hljs">Seq</code> 分別是四種不同的 class。一個 class 除了會帶著他當下的值(例如一個 <code class="hljs">Int</code> 可能帶著 <code class="hljs">10</code>，一個 <code class="hljs">Seq</code> 可能帶著四個 <code class="hljs">String</code> <code class="hljs">&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;</code>)之外，也會帶著一些可以讓你呼叫的 functions。這些 functions 一樣是由 <code class="hljs">def</code> 定義出來的，並且可以存取 class 身上帶的值，進行一些運算之後，回傳你想要的結果，例如之前看過的 <code class="hljs">.toString</code>、<code class="hljs">.toUpperCase</code>，或是這邊看到的 <code class="hljs">.apply()</code>、<code class="hljs">.take()</code>。當我們在一個變數或值的後面加上 &quot;.&quot; 時，就可以啟動藏在 class 裡面的 functions。通常這些 functions 並不會修改 class 身上帶的值，因此我們可以發現，就算我們對 <code class="hljs">s</code> 呼叫了 <code class="hljs">.apply()</code>，或是對 <code class="hljs">third</code> 呼叫了 <code class="hljs">.take()</code>，<code class="hljs">s</code> 跟 <code class="hljs">third</code> 印出來的值依然跟一開始創建時一樣沒有改變。</p>
+<p>附帶一提，你可能有注意到，用 <code class="hljs">println()</code> 把 <code class="hljs">Seq</code> 印出來之後，看到的卻是 <code class="hljs">List(...)</code>，這是 class 的繼承關係造成的結果，可以先把 <code class="hljs">List</code> 當成一種 <code class="hljs">Seq</code> 來看待就好了。關於更多 class 的架構說明，就留待之後揭曉，我們先來看看 <code class="hljs">Seq</code> 還有哪些方便的 functions 可以使用:</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=qn0lFe3/0"></iframe>
+<h2 id="infix-operator" class="a_section" data-magellan-target="infix-operator">infix operator<a class="a_hlink" href="#infix-operator"></a></h2>
+<p>Infix operator就是放在兩個值中間的運算子。例如 <code class="hljs">a + b</code>的<code class="hljs">+</code>。
+在Scala裡面operator就是一般的method。例如一般常見的數字加法<code class="hljs">val a = 1 + 1</code>其實就是<code class="hljs">val a = 1.+(1)</code>。</p>
+<p>Scala有基本的規則讓我們可以使用空格代替<code class="hljs">.</code>和<code class="hljs">()</code>。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code>a b c d e == a.b(c).d(e)
+</code></pre>
+</div></div>
+<p>這提供了我們在設計API上的便利性，也可以讓看起來很不順的程式變的比較容易閱讀。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=cLh8Tda/0"></iframe>
+<h4 id="優先順序" class="a_section" data-magellan-target="優先順序">優先順序<a class="a_hlink" href="#優先順序"></a></h4>
+<p>當有多個operator的時候就會有有限順序的問題。如果沒有用<code class="hljs">()</code>包起來的話就會依照下面的順序</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-markdown">(characters not shown below)
+<span class="hljs-bullet">* </span>/ %
+<span class="hljs-bullet">+ </span>-
+:
+= !
+<span class="xml"><span class="hljs-tag">&lt; &gt;</span></span>
+&amp;
+^
+|
+(all letters)
+</code></pre>
+</div></div>
+<h4 id="advanced" class="a_section" data-magellan-target="advanced">Advanced<a class="a_hlink" href="#advanced"></a></h4>
+<p>如果在operator的後面加上<code class="hljs">:</code>就可以讓在使用的時候將整個被呼叫的物件和參數的順序調換。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=0gxE0dt/0"></iframe>
+<h2 id="string" class="a_section" data-magellan-target="string">String<a class="a_hlink" href="#string"></a></h2>
+<p>字串的宣告方式主要有兩種<code class="hljs">&quot;</code>和<code class="hljs">&quot;&quot;&quot;</code>兩種。<code class="hljs">&quot;</code>就跟大部分其它語言一樣。<code class="hljs">&quot;&quot;&quot;</code>跟<code class="hljs">&quot;</code>的方式是一樣的，可是我們在裡面就可以很自由的使用「換行」或<code class="hljs">&quot;</code>都不用擔心要escape。</p>
+<p>String的合併是用<code class="hljs">+</code>。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=R3UmDQ0/0"></iframe>
+<h4 id="string-interpolation" class="a_section" data-magellan-target="string-interpolation">String interpolation<a class="a_hlink" href="#string-interpolation"></a></h4>
+<p>String interpolation有兩種基本的用法。</p>
+<ol>
+<li>
+<p>在String的開頭加上<code class="hljs">s</code>就可以在String裡面使用環境變數讓字串的組成更好用。</p>
+</li>
+<li>
+<p>在String的開頭加上<code class="hljs">f</code>就可以有<code class="hljs">printf</code>的功效。然後再結合上面的功能就可以同時format參數了。</p>
+</li>
+</ol>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=mpYc3xU/0"></iframe>
+<p><a href="http://docs.scala-lang.org/overviews/core/string-interpolation.html">more</a></p>
+<h2 id="section" class="a_section" data-magellan-target="section">=&gt;<a class="a_hlink" href="#section"></a></h2>
+<p>這通常被叫做 &quot;Fat Arrow&quot;，可是在Scala裡這叫 &quot;<a href="http://docs.scala-lang.org/tutorials/scala-for-java-programmers.html">Right Arrow</a>&quot;。
+這主要用途有：</p>
+<ol>
+<li>宣告anonymous function</li>
+<li>表示一個變數的類型為某種型態的function</li>
+<li>一個特別的參數類型, Called-by-name parameter</li>
+</ol>
+<h4 id="anonymous-function" class="a_section" data-magellan-target="anonymous-function"><strong>Anonymous Function</strong><a class="a_hlink" href="#anonymous-function"></a></h4>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=6Feq6LT/0"></iframe>
+<h4 id="function-type" class="a_section" data-magellan-target="function-type"><strong>Function Type</strong><a class="a_hlink" href="#function-type"></a></h4>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=ng8orJ6/0"></iframe>
+<h4 id="called-by-name-parameter" class="a_section" data-magellan-target="called-by-name-parameter"><strong>Called-by-name parameter</strong><a class="a_hlink" href="#called-by-name-parameter"></a></h4>
+<p>這種parameter比較特別。通常參數會被在傳遞到function之前就被執行完而且得到一個預期的值。
+Called-by-name parameter在被傳入function的時候並不會被執行，而是在function裡面被使用的時候才執行而求出期望的值。
+這樣可以在當此參數沒用被使用的時候節省運算的資源。</p>
+<p>Note: 這個類型的parameter跟lazy很像可是卻不像lazy再被使用過一次就不會再被計算，每一次使用都會執行一次裡面的邏輯。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=GMHiV9e/0"></iframe>
+<h2 id="tuple" class="a_section" data-magellan-target="tuple">Tuple<a class="a_hlink" href="#tuple"></a></h2>
+<p>Tuple跟List/Seq在集合的概念上是很像的。只是它的類型不被限定只有一種，而是每一個元素都可以指定類型。
+Tuple的大小也是在宣告的時候就決定的，不像List可以無限延展。
+可是在Scala裡面，它最多只能有22個元素。</p>
+<p>Tuple的宣告就是用小括號包起來。要取得裡面的元素就用<code class="hljs">._1</code>, <code class="hljs">._2</code>依照位置取得，從1開始。
+通常只有2個元素的Tuple也被稱為Pair。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=ROMW1vp/0"></iframe>
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_bottom">
+    
+      
+        <li><span><span class="a_foundation_icon"></span>  Previous</span></li>
+      
+    
+      
+        <li><a href="map.html"  title="map/flatMap/filter" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+              </main>
+              
+              
+                <div data-sticky-container class="small-12 medium-12 large-2 large-order-1 columns a_sitenav_container">
+                  <nav class="a_sitenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                    
+                    <ul>
+                       
+  <li  class="a_thispage" >
+    
+      
+        <a href="index.html">Basics</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="map.html">map/flatMap/filter</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="recursive.html">遞迴</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="implicit.html">Implicits</a>
+      
+    
+    
+  </li>
+ 
+                    </ul>
+                    
+                    
+                  </nav>
+                </div>
+              
+              
+              
+                <div class="small-12 medium-12 large-2 large-order-3 columns a_show-for-xlarge" data-sticky-container>
+                  <nav class="a_pagenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                     <header><p>On This Page</p>
+</header> 
+                    <ul class="vertical menu" data-magellan>
+                       
+  
+    <li>
+      
+         <a href="#welcome-to-scalakitchen">Welcome to ScalaKitchen!</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#variables">Variables</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#if-expression">If Expression</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#functions">Functions</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#blocks">Blocks</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#def-vs-val">def vs val</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#sequences">Sequences</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#infix-operator">infix operator</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#優先順序">優先順序</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#advanced">Advanced</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#string">String</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#string-interpolation">String interpolation</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#section">=&gt;</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#anonymous-function">Anonymous Function</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#function-type">Function Type</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#called-by-name-parameter">Called-by-name parameter</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#tuple">Tuple</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+ 
+                    </ul>
+                  </nav>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer class="small-12 medium-12 large-12 columns align-self-bottom a_footer">
+        <div class="row">
+          <div class="small-12 medium-12 large-12 columns top-bar">
+            <div class="top-bar-left">
+              
+            </div>
+            <div class="top-bar-right">
+              <p>Generated with <a href="https://github.com/szeiger/ornate">Ornate</a>.</p>
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script src="theme/js/jquery.min.js"></script>
+    <script src="theme/js/what-input.min.js"></script>
+    <script src="theme/js/foundation.min.js"></script>
+    
+    <script src="theme/js/app.js"></script>
+    
+  </body>
+</html>

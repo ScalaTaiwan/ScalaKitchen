@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="no-js" lang="eng" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遞迴</title>
+    <link rel="stylesheet" href="theme/css/foundation.min.css">
+    <link rel="stylesheet" href="theme/css/app.css">
+     <link rel="icon" href="favicon.png" /> 
+     <link rel="stylesheet" href="theme/highlight.js/styles/github-gist.css">  <link rel="stylesheet" href="theme/css/foundation-icons.custom.css"> 
+    
+     <link rel="start" href="index.html"  title="Basics"  />  <link rel="prev" href="map.html"  title="map/flatMap/filter"  />  <link rel="next" href="implicit.html"  title="Implicits"  /> 
+  </head>
+  <body>
+    <div class="expanded row">
+      <div class="small-12 medium-12 large-12 columns align-self-top">
+        <div class="row">
+          
+          <header class="large-12 columns align-self-top a_header">
+            <div class="row">
+              <div class="large-12 columns a_limited top-bar">
+                <div class="top-bar-left">
+                  <p>Scala 料理教室</p>
+
+                </div>
+                <div class="top-bar-right align-right row">
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          <div class="small-12 medium-12 large-12 columns align-self-top a_limited a_main">
+            <div class="row">
+              
+              <main class="columns large-order-2 sections" id="_sections">
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_top">
+    
+      
+        <li><a href="map.html"  title="map/flatMap/filter" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><a href="implicit.html"  title="Implicits" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+                
+                <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'ScalaTaiwan/ScalaTaiwan'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<h1 id="遞迴" class="a_section" data-magellan-target="遞迴">遞迴<a class="a_hlink" href="#遞迴"></a></h1>
+<p>在functional programming世界中是不准許有mutable變數，意味著我們熟悉的 <code class="hljs">while</code>, <code class="hljs">for</code> 迴圈都是禁止使用。
+那我們應該怎麼辦呢？ 這邊會舉個數個例子，來解釋是透過遞迴方式來完成 <code class="hljs">while</code> 或 <code class="hljs">for</code> 迴圈。</p>
+<h2 id="從一個串列中找出最大值" class="a_section" data-magellan-target="從一個串列中找出最大值">從一個串列中找出最大值<a class="a_hlink" href="#從一個串列中找出最大值"></a></h2>
+<p>如果在 <code class="hljs">Java</code> 我們會怎麼做呢？</p>
+<ol>
+<li>宣個一個變數(max)存放目前的最大值</li>
+<li>透過<code class="hljs">while</code> 或 <code class="hljs">for</code> 迴圈，將串列中的每個元素跟我們宣告的變數(max)比大小
+2.1 若元素的值大於max，max的值就改為此元素的值
+2.2 若元素的值小於或等於max，不做任何事</li>
+</ol>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=6vkdiP2/0"></iframe>
+<p>透過遞迴方式我們會怎麼解決呢？</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=eo0KVWV/0"></iframe>
+<ul>
+<li>在迴圈版本中，逐一每個元素跟某一個mutable變數比大小。</li>
+<li>在遞迴版本中，第一個元素跟去除第一個元素的串列的最大值比大小。</li>
+</ul>
+<p>遞迴的寫法更是簡潔和表達出整個程式主要邏輯，我們再來多試看看幾個題目。</p>
+<h2 id="從一個串列中找出最小值" class="a_section" data-magellan-target="從一個串列中找出最小值">從一個串列中找出最小值<a class="a_hlink" href="#從一個串列中找出最小值"></a></h2>
+<p>做法跟找出最大值類似，第一個元素跟去除第一個元素的串列的最小值比大小。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=a7BC2Yd/0"></iframe>
+<h2 id="檢查一個串列中是否存在某個特定值" class="a_section" data-magellan-target="檢查一個串列中是否存在某個特定值">檢查一個串列中是否存在某個特定值<a class="a_hlink" href="#檢查一個串列中是否存在某個特定值"></a></h2>
+<p>檢查第一個元素是否等於目標值或是去除第一個元素的串列有目標值</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=EHG4KQW/0"></iframe>
+<h2 id="反轉一個字串" class="a_section" data-magellan-target="反轉一個字串">反轉一個字串<a class="a_hlink" href="#反轉一個字串"></a></h2>
+<p>先反轉去除第一個字元的串列，之後再將第一字元放在最後面</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=vrMfmWZ/0"></iframe>
+<h2 id="判斷一個字串是否為另外一個字串的子字串" class="a_section" data-magellan-target="判斷一個字串是否為另外一個字串的子字串">判斷一個字串是否為另外一個字串的子字串<a class="a_hlink" href="#判斷一個字串是否為另外一個字串的子字串"></a></h2>
+<p>子字串的定義：字數，內容和順序需要符合，空字串為任何字串的子字串
+例如：</p>
+<ul>
+<li>&quot;abc&quot; 為 &quot;XXXYYYabc&quot;的子字串</li>
+<li>&quot;XXXY&quot; 為 &quot;XXXYYYabc&quot;的子字串</li>
+<li>&quot;&quot; 為 &quot;XXXYYYabc&quot;的子字串</li>
+<li>&quot;ABC&quot; 不為 &quot;XXXYYYabc&quot;的子字串</li>
+<li>&quot;QQWW&quot; 不為 &quot;XXXYYYabc&quot;的子字串</li>
+<li>&quot;XXXaYYY&quot; 不為 &quot;XXXYYYabc&quot;的子字串</li>
+</ul>
+<p>先比較主要字串和子字串的第一個字母是否一樣，</p>
+<ul>
+<li>若一樣則這兩個字串去除第一個字母繼續比</li>
+<li>若不一樣，主要字串去除第一個字母和子字串繼續比</li>
+</ul>
+<p>例如：
+主要字串：&quot;abcdefghi&quot;
+子字串: &quot;abc&quot;
+檢查主要字串前三個字母（abc）是否和子字串（abc）一樣，若一樣就回傳<code class="hljs">true</code></p>
+<p>主要字串：&quot;abcdefghi&quot;
+子字串: &quot;defgh&quot;
+檢查主要字串前五個字母（abcde）是否和子字串（defgh）一樣，若不一樣，
+則 &quot;bcdefghi&quot; 和 &quot;defgh&quot; 繼續比</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=eVgifFq/0"></iframe>
+<h2 id="將一個串列由小排到大" class="a_section" data-magellan-target="將一個串列由小排到大">將一個串列由小排到大<a class="a_hlink" href="#將一個串列由小排到大"></a></h2>
+<p>我們來實作<a href="https://zh.wikipedia.org/wiki/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">Quicksort</a></p>
+<ol>
+<li>從數列中挑出一個元素，稱為&quot;基準&quot;（pivot）。</li>
+<li>重新排序數列，所有比基準值小的元素擺放在基準前面，所有比基準值大的元素擺在基準後面（相同的數可以到任一邊）。在這個分割結束之後，該基準就處於數列的中間位置。這個稱為分割（partition）操作。</li>
+<li>遞迴地（recursively）把小於基準值元素的子數列和大於基準值元素的子數列排序。</li>
+</ol>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=8UETPXY/0"></iframe>
+<h2 id="寫出費氏數列" class="a_section" data-magellan-target="寫出費氏數列">寫出費氏數列<a class="a_hlink" href="#寫出費氏數列"></a></h2>
+<p>何謂費氏數列：<a href="https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">費氏數列</a></p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=7yJw5gs/0"></iframe>
+<p>經過幾次的練習，我們應該大概可以慢慢掌握到怎麼運用遞迴來達到迴圈目的。</p>
+<ol>
+<li>先把主要邏輯寫出來</li>
+<li>再把邊界條件設好，沒有邊界條件就會無窮的跑下去...
+遞迴主要是透過自我呼叫，把每一步的狀態放在 <code class="hljs">stack</code>，等走到邊界回傳邊界值或完成邊界條件後，再回溯回去。</li>
+</ol>
+<p>把問題透過<a href="https://zh.wikipedia.org/wiki/%E5%88%86%E6%B2%BB%E6%B3%95">Divide and conquer</a>方式，
+大問題分解成數個小問題，若小問題規模較小且易於解決時，則直接解。否則，遞歸地解決各小問題。
+最後再將每個小問題的結果逐一合併起來。</p>
+<p>遞迴的寫法很簡潔，但是最大的問題是效能不好和容易 <code class="hljs">Stack Overflow</code>。
+主要原因是會去嘗試走所有可能的路徑而且把每一個狀態放在stack，當狀態一多就爆了。
+去嘗試走所有可能的路徑也是造成效能不好的原因。</p>
+<p>假如：</p>
+<ol>
+<li>去嘗試走所有可能的路徑不多，但是每一個步計算很花時間，遞迴容易轉換成非同步程式。</li>
+</ol>
+<p>以排序為例，一個串列數量小於一千，我們可以使用<a href="https://zh.wikipedia.org/wiki/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">Insertion Sort</a>；大於一千改使用Quicksort：</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sort</span></span>(list: <span class="hljs-type">List</span>[<span class="hljs-type">Int</span>]): <span class="hljs-type">List</span>[<span class="hljs-type">Int</span>] = {
+  <span class="hljs-keyword">if</span>(n &lt; <span class="hljs-number">1000</span>){
+    <span class="hljs-comment">// 需要大量時間計算才可以得出結果</span>
+    insertionSort(list)
+  }
+  <span class="hljs-keyword">else</span>{
+    list <span class="hljs-keyword">match</span> {
+      <span class="hljs-keyword">case</span> <span class="hljs-type">Nil</span> =&gt; <span class="hljs-type">Nil</span>
+      <span class="hljs-keyword">case</span> h :: <span class="hljs-type">Nil</span> =&gt; <span class="hljs-type">List</span>(h)
+      <span class="hljs-keyword">case</span> h :: t =&gt; sort(t.filter(_ &lt;= h)) ::: h :: sort(t.filter(_ &gt; h))
+    }
+  }
+}
+</code></pre>
+</div></div>
+<p>我們可以輕易將它轉換成非同步程式。</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sort</span></span>(list: <span class="hljs-type">List</span>[<span class="hljs-type">Int</span>]): <span class="hljs-type">Future</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Int</span>]] = {
+  <span class="hljs-keyword">if</span>(n &lt; <span class="hljs-number">1000</span>){
+    <span class="hljs-comment">// 需要大量時間計算才可以得出結果 </span>
+    <span class="hljs-type">Future</span>(insertionSort(list))
+  }
+  <span class="hljs-keyword">else</span>{
+    list <span class="hljs-keyword">match</span> {
+      <span class="hljs-keyword">case</span> <span class="hljs-type">Nil</span> =&gt; <span class="hljs-type">Future</span>(<span class="hljs-type">Nil</span>)
+      <span class="hljs-keyword">case</span> h :: <span class="hljs-type">Nil</span> =&gt; <span class="hljs-type">Future</span>(<span class="hljs-type">List</span>(h))
+      <span class="hljs-keyword">case</span> h :: t =&gt; <span class="hljs-type">Future</span>(sort(t.filter(_ &lt;= h)) ::: h :: sort(t.filter(_ &gt; h)))
+    }
+  }
+}
+</code></pre>
+</div></div>
+<p>非遞迴的版本就很難改了，因為主要存在共享的mutable變數，多個thread會共享同一個變數，就需要做同步處理。
+同步問題沒有小心處理，結果很容易出錯。</p>
+<ol start="2">
+<li>嘗試走所有可能的路徑很多</li>
+</ol>
+<p>例如：計算第五十個費氏數列
+根據計算費氏數列的遞迴公式， <code class="hljs">n = 50</code> 的樹狀結構會相當大。我們可以透過 <code class="hljs">Tail recursion</code> 來解決。
+把上一個狀態的結果直接當成帶入參數，而不是依賴上一個狀態的結果。</p>
+<p>因為 <code class="hljs">fib(n) = fib(n - 1) + fib(n - 2)</code>，假如可以把 <code class="hljs">fib(n - 1)</code> 和 <code class="hljs">fib(n - 2)</code> 當參數帶入，
+這樣就可以馬上得出 <code class="hljs">fib(n)</code>，而不是等算完 <code class="hljs">fib(n - 1)</code> 和 <code class="hljs">fib(n - 2)</code> 後才可以得出 <code class="hljs">fib(n)</code>。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=86krEsq/0"></iframe>
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_bottom">
+    
+      
+        <li><a href="map.html"  title="map/flatMap/filter" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><a href="implicit.html"  title="Implicits" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+              </main>
+              
+              
+                <div data-sticky-container class="small-12 medium-12 large-2 large-order-1 columns a_sitenav_container">
+                  <nav class="a_sitenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                    
+                    <ul>
+                       
+  <li >
+    
+      
+        <a href="index.html">Basics</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="map.html">map/flatMap/filter</a>
+      
+    
+    
+  </li>
+  
+  <li  class="a_thispage" >
+    
+      
+        <a href="recursive.html">遞迴</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="implicit.html">Implicits</a>
+      
+    
+    
+  </li>
+ 
+                    </ul>
+                    
+                    
+                  </nav>
+                </div>
+              
+              
+              
+                <div class="small-12 medium-12 large-2 large-order-3 columns a_show-for-xlarge" data-sticky-container>
+                  <nav class="a_pagenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                     <header><p>On This Page</p>
+</header> 
+                    <ul class="vertical menu" data-magellan>
+                       
+  
+    <li>
+      
+         <a href="#遞迴">遞迴</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#從一個串列中找出最大值">從一個串列中找出最大值</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#從一個串列中找出最小值">從一個串列中找出最小值</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#檢查一個串列中是否存在某個特定值">檢查一個串列中是否存在某個特定值</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#反轉一個字串">反轉一個字串</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#判斷一個字串是否為另外一個字串的子字串">判斷一個字串是否為另外一個字串的子字串</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#將一個串列由小排到大">將一個串列由小排到大</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#寫出費氏數列">寫出費氏數列</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+ 
+                    </ul>
+                  </nav>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer class="small-12 medium-12 large-12 columns align-self-bottom a_footer">
+        <div class="row">
+          <div class="small-12 medium-12 large-12 columns top-bar">
+            <div class="top-bar-left">
+              
+            </div>
+            <div class="top-bar-right">
+              <p>Generated with <a href="https://github.com/szeiger/ornate">Ornate</a>.</p>
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script src="theme/js/jquery.min.js"></script>
+    <script src="theme/js/what-input.min.js"></script>
+    <script src="theme/js/foundation.min.js"></script>
+    
+    <script src="theme/js/app.js"></script>
+    
+  </body>
+</html>

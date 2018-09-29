@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="no-js" lang="eng" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map/flatMap/filter</title>
+    <link rel="stylesheet" href="theme/css/foundation.min.css">
+    <link rel="stylesheet" href="theme/css/app.css">
+     <link rel="icon" href="favicon.png" /> 
+     <link rel="stylesheet" href="theme/highlight.js/styles/github-gist.css">  <link rel="stylesheet" href="theme/css/foundation-icons.custom.css"> 
+    
+     <link rel="start" href="index.html"  title="Basics"  />  <link rel="prev" href="index.html"  title="Basics"  />  <link rel="next" href="recursive.html"  title="遞迴"  /> 
+  </head>
+  <body>
+    <div class="expanded row">
+      <div class="small-12 medium-12 large-12 columns align-self-top">
+        <div class="row">
+          
+          <header class="large-12 columns align-self-top a_header">
+            <div class="row">
+              <div class="large-12 columns a_limited top-bar">
+                <div class="top-bar-left">
+                  <p>Scala 料理教室</p>
+
+                </div>
+                <div class="top-bar-right align-right row">
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          <div class="small-12 medium-12 large-12 columns align-self-top a_limited a_main">
+            <div class="row">
+              
+              <main class="columns large-order-2 sections" id="_sections">
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_top">
+    
+      
+        <li><a href="index.html"  title="Basics" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><a href="recursive.html"  title="遞迴" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+                
+                <script>
+  ((window.gitter = {}).chat = {}).options = {
+    room: 'ScalaTaiwan/ScalaTaiwan'
+  };
+</script>
+<script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
+<h1 id="mapflatmapfilter" class="a_section" data-magellan-target="mapflatmapfilter">map/flatMap/filter<a class="a_hlink" href="#mapflatmapfilter"></a></h1>
+<h2 id="map" class="a_section" data-magellan-target="map">map<a class="a_hlink" href="#map"></a></h2>
+<p><code class="hljs">map</code>在數學上也稱<a href="https://zh.wikipedia.org/wiki/%E6%98%A0%E5%B0%84">映射</a>,
+而在scala中即表示任一個集合<code class="hljs">List[A]</code>中的每個元素<code class="hljs">a</code>均可透過函數<code class="hljs">f</code>轉換為元素<code class="hljs">b</code>, 進而產生一個新的集合<code class="hljs">List[B]</code>, 如下圖</p>
+<img class="float-center" src="images/map.png" style="height:200px"/>
+<p>例如，把Int轉換成String就是Int map to String。</p>
+<p>map就會需要用一個function來做到轉換的功能，map的method signature長這樣<code class="hljs">.map(f: A =&gt; B)</code>。這裡f就是一個可以把A轉換到B的function(A和B不一定是不同類型，也可以是同樣類型)。</p>
+<p>在scala很多資料結構都有map這個功能。這個功能非常的強大。它讓你可以在不重組整個資料結構就可以將裡面的內容轉換成另外一種類別。</p>
+<p>map的method signature長這樣<code class="hljs">.map(f: A =&gt; B)</code></p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-comment">//example:  Int map to string</span>
+<span class="hljs-keyword">val</span> ints:<span class="hljs-type">List</span>[<span class="hljs-type">Int</span>]=<span class="hljs-type">List</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>)
+<span class="hljs-keyword">val</span> strs:<span class="hljs-type">List</span>[<span class="hljs-type">String</span>]=ints.map(i=&gt;i.toString)
+</code></pre>
+</div></div>
+<p>另一個例子，如果你有一個<code class="hljs">List[Int]</code>，這個List裡面都是學生學號，可是你要的是這些學號對應的學生。</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=20c8KVP/0"></iframe>
+<h2 id="flatmap" class="a_section" data-magellan-target="flatmap">flatMap<a class="a_hlink" href="#flatmap"></a></h2>
+<p><code class="hljs">map</code>是一個將A轉成B的function。可是在實務上常常會是A轉成List[B]。
+而<code class="hljs">flatMap</code>的用意就是可以把裡面一層的資料結構壓平，直接將資料攤平在外面的階層。
+例如我們有一個method<code class="hljs">def toStudents(classNumber: Int): List[Student]</code>，它是用課堂編號取得所有在這個課堂內的學生清單。
+可是需求是從一個課堂編號的清單取得所有這些課堂內的學生（不管是否重複）。</p>
+<p>如果我們只用map的話會變成這樣</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=XlyQNPQ/0"></iframe>
+<p>我們上面得到的是<code class="hljs">List[List[Student]]</code>，可是這不是我們要的，而且裡面還有一個空的List。</p>
+<p>這時候只要把map換成flapMap就可以了</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=NXthYNE/0"></iframe>
+<p>這裡我們要的<code class="hljs">List[Student]</code>就很輕易的得到了，而且也沒有那個空的List在佔位置了。</p>
+<h2 id="filter" class="a_section" data-magellan-target="filter">filter<a class="a_hlink" href="#filter"></a></h2>
+<p>filter的概念很簡單，就是過濾，把不要的東西刪除掉並把符合條件的留下。</p>
+<p>filter的method signature長這樣<code class="hljs">.filter(f: A =&gt; Boolean)</code>,
+<code class="hljs">f</code>是一個回傳Boolean值的函數，透過<code class="hljs">f</code>過濾出符合條件的元素，如下圖</p>
+<img class="float-center" src="images/filter.png" style="height:200px"/>
+<p>``</p>
+<iframe height="300" frameborder="0" style="width: 100%; overflow: hidden;" src="https://embed.scalafiddle.io/embed?sfid=RjtSBDa/0"></iframe>
+<h2 id="additional" class="a_section" data-magellan-target="additional">Additional<a class="a_hlink" href="#additional"></a></h2>
+<p>其實在寫程式的時候，大部分的工作都可以被歸類成map/flatMap/filter。
+大家可以好好思考一下是不是真的是如此？</p>
+<p>簡單的例子，大家熟悉的SQL。有興趣可以參考<a href="http://slick.lightbend.com/doc/3.2.1/queries.html">Slick</a>這個library。</p>
+<p>就延續上面Student的例子，再加上課堂與學生關聯的物件</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span>(<span class="hljs-params">number: <span class="hljs-type">Int</span>, nickname: <span class="hljs-type">String</span></span>)</span>
+<span class="hljs-comment">//省略課堂這個物件</span>
+<span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClassStudent</span>(<span class="hljs-params">classNumber: <span class="hljs-type">Int</span>, studentNumber: <span class="hljs-type">Int</span></span>)</span>
+</code></pre>
+</div></div>
+<p>SQL應該會長這樣（另外在加上我們只要基數學生號這個條件）</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-sql">
+<span class="hljs-keyword">SELECT</span> s.* 
+<span class="hljs-keyword">FROM</span> ClassStudent cs 
+<span class="hljs-keyword">JOIN</span> Student s <span class="hljs-keyword">ON</span> cs.studentNumber = s.number
+<span class="hljs-keyword">WHERE</span> s.number % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>
+  <span class="hljs-keyword">AND</span> cs.classNumber <span class="hljs-keyword">in</span> (<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>)
+</code></pre>
+</div></div>
+<p>用map/flatMap/filter</p>
+<div class="row"><div class="a_linked small-expand columns a_xscroll a_codeblock">
+<pre class="hljs"><code class="language-scala">
+<span class="hljs-type">List</span>(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>).flatMap(findClassStudent)
+             .map(cs =&gt; toStudent(cs.studentNumber))
+             .filter(s =&gt; s.number % <span class="hljs-number">2</span> &gt; <span class="hljs-number">0</span>)
+</code></pre>
+</div></div>
+
+                 
+  <ul class="menu align-right simple a_navbar a_navbar_bottom">
+    
+      
+        <li><a href="index.html"  title="Basics" ><span class="a_foundation_icon"></span>  Previous</a></li>
+      
+    
+      
+        <li><a href="recursive.html"  title="遞迴" ><span class="a_foundation_icon"></span>  Next</a></li>
+      
+    
+  </ul>
+ 
+              </main>
+              
+              
+                <div data-sticky-container class="small-12 medium-12 large-2 large-order-1 columns a_sitenav_container">
+                  <nav class="a_sitenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                    
+                    <ul>
+                       
+  <li >
+    
+      
+        <a href="index.html">Basics</a>
+      
+    
+    
+  </li>
+  
+  <li  class="a_thispage" >
+    
+      
+        <a href="map.html">map/flatMap/filter</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="recursive.html">遞迴</a>
+      
+    
+    
+  </li>
+  
+  <li >
+    
+      
+        <a href="implicit.html">Implicits</a>
+      
+    
+    
+  </li>
+ 
+                    </ul>
+                    
+                    
+                  </nav>
+                </div>
+              
+              
+              
+                <div class="small-12 medium-12 large-2 large-order-3 columns a_show-for-xlarge" data-sticky-container>
+                  <nav class="a_pagenav" data-sticky data-sticky-on="large" data-anchor="_sections">
+                     <header><p>On This Page</p>
+</header> 
+                    <ul class="vertical menu" data-magellan>
+                       
+  
+    <li>
+      
+         <a href="#mapflatmapfilter">map/flatMap/filter</a> 
+      
+      
+        <ul class="vertical menu">  
+  
+    <li>
+      
+         <a href="#map">map</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#flatmap">flatMap</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#filter">filter</a> 
+      
+      
+    </li>
+  
+  
+  
+    <li>
+      
+         <a href="#additional">Additional</a> 
+      
+      
+    </li>
+  
+  </ul>
+      
+    </li>
+  
+ 
+                    </ul>
+                  </nav>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer class="small-12 medium-12 large-12 columns align-self-bottom a_footer">
+        <div class="row">
+          <div class="small-12 medium-12 large-12 columns top-bar">
+            <div class="top-bar-left">
+              
+            </div>
+            <div class="top-bar-right">
+              <p>Generated with <a href="https://github.com/szeiger/ornate">Ornate</a>.</p>
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script src="theme/js/jquery.min.js"></script>
+    <script src="theme/js/what-input.min.js"></script>
+    <script src="theme/js/foundation.min.js"></script>
+    
+    <script src="theme/js/app.js"></script>
+    
+  </body>
+</html>
